@@ -1,0 +1,25 @@
+.form-control.mr-sm-2,.btn.btn-outline-success.my-2.my-sm-0{
+    box-shadow: 10px 10px 5px grey;
+
+}
+.active.btn.btn-outline-success.my-2.my-sm-0{
+    box-shadow: 10px 10px 5px green;
+    color: whitesmoke;
+    margin-left: 30px;
+    background-color: #007bff;
+    min-width:90px;
+    max-height: 50px;
+}
+.active.btn.btn-outline-success.my-2.my-sm-0:hover{
+    background-color: #0069d9;
+
+}
+.input-group.mb-3{
+    width: 400px;
+}
+#navbarDropdown{
+    color: black;
+}
+.form-inline.my-2.my-lg-0{
+    margin-left: 60px;
+}

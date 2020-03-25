@@ -1,0 +1,85 @@
+.nav-division{
+    display: grid;
+    grid-template-columns: 40rem 30rem auto;
+    grid-gap: 10px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 50rem auto;
+    grid-gap: 10px;
+    background-color: #9fcdff;
+    padding: 10px;
+}
+
+
+p.login-register{
+    text-align: center;
+    background-color: #007bff;
+    height: 3rem;
+    color: whitesmoke;
+
+}
+input{
+    border-radius: 5px;
+    border-width: 2px;
+
+}
+div>input,.btn.btn-outline-success.my-2.my-sm-0,.form-control.mr-sm-2{
+    box-shadow: 10px 10px 5px grey;
+}
+
+pre{
+    text-shadow: 0 0 1px #0b2e13, 0 0 1px #0b2e13;
+}
+div>hr{
+    margin-top: 5px;
+}
+.card.dynamic{
+    height: 23rem;
+    background-color: #9fcdff;
+    border-width: 4px;
+    border-color: #007bff;
+    border-radius: 10px;
+    margin-top: -10px;
+
+
+}
+.card-title{
+    border: #1b1e21;
+    height: 3rem;
+    background-color: #34ce57;
+    text-align: center;
+    color: whitesmoke;
+    border-radius: 50px;
+    box-shadow: 10px 10px 5px green;
+
+
+}
+.card.form{
+    background-color:rgb(179, 255, 179);
+    border-color: #1c7430;
+    border-width: 4px;
+    margin-top: -10px;
+    border-radius: 10px;
+}
+.btn.btn-primary{
+    float:right;
+}
+
+.card-scroll{
+    margin:4px;
+    padding:4px;
+    overflow-x: hidden;
+    overflow-x: auto;
+    text-align:justify;
+
+}
+.card.grid-shares{
+    display: grid;
+    grid-template-columns: 10rem auto;
+    min-height: 10rem;
+    max-width: 47rem;
+    background-color: #71dd8a;
+    /*overflow: paged-x;*/
+}
