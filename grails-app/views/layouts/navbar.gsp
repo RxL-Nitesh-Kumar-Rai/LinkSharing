@@ -8,16 +8,19 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
+
+%{--    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>--}%
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+    <asset:javascript src="navbar.js"/>
     <asset:stylesheet src="navbar.css"/>
     <asset:link rel="icon" href="favicon.ico" type="image/x-ico"/>
     <title><g:layoutTitle default="Link sharing"/></title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"/>
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-%{--    <asset:link rel="icon" href="icon.png" type="image/x-ico"/>--}%
     <g:layoutHead/>
 </head>
 
@@ -36,7 +39,7 @@
                         User
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Profile</a>
+                        <g:link class="dropdown-item" controller="dashBoard" params="[userName:session.sessionId]" action="userprofile">Profile</g:link>
                         <div class="dropdown-divider"></div>
                         <g:if test="${session.getAttribute("isAdmin")}">
                             <a class="dropdown-item" href="${createLink(controller: 'dashBoard',action: 'allusers')}">Users</a>
@@ -46,7 +49,7 @@
                             <a class="dropdown-item" href="#">Posts</a>
                             <div class="dropdown-divider"></div>
                         </g:if>
-                        <a class="dropdown-item" href='logout'>Logout</a>
+                        <g:link class="dropdown-item" controller="dashBoard" action="logout">Logout</g:link>
                     </div>
                 </li>
                 <button class="nav-item active btn btn-outline-success my-2 my-sm-0 nav-link  btn-primary" data-target="#createtopic" data-toggle="modal">
@@ -81,14 +84,15 @@
                 </button>
             </div>
             <div class="modal-body">
-                <g:uploadForm name="shareLink" id="form1" url="[controller:'dashBoard',action:'createtopic']">
+%{--                url="[controller:'dashBoard',action:'createtopic']"--}%
+                <g:uploadForm name="shareLink" id="form1" >
 
                     <div class="modal-body" >
-                        <pre>Name*:         <input type="text" name="tName" size="33" required/></pre>
+                        <pre>Name*:         <input type="text" name="tName" id="topicName" size="33" required/></pre>
 
                         Visibility*:
                         <div class="input-group mb-3">
-                            <select class="custom-select" id="inputGroupSelect01" name="tType"  required>
+                            <select class="custom-select" id="inputGroupSelect01"  name="tType"  required>
                                 <option value="Public">Public</option>
                                 <option value="Private">Private</option>
                             </select>
@@ -96,8 +100,8 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" value="submit">Save</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" id="form1-btn1" class="btn btn-primary" value="submit">Save</button>
+                        <button type="button" id="form1-btn2" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </div>
                 </g:uploadForm>
             </div>
@@ -149,20 +153,20 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <g:uploadForm name="shareLink" id="form1" url="[controller:'dashBoard',action:'createlink']" >
+            <g:uploadForm name="shareLink" id="form3" >
 
                 <div class="modal-body" >
-                <pre>Link*:         <input type="text" required size="38" name="linkurl" required/></pre>
-                    <pre>Description*:  <textarea rows="4" cols="38" required name="linkdescription" aria-multiline="true"maxlength="255"></textarea> </pre>
+                <pre>Link*:         <input type="text" required size="38" id="linkurl" name="linkurl" required/></pre>
+                    <pre>Description*:  <textarea rows="4" cols="38" id="linkdescription" required name="linkdescription" aria-multiline="true"maxlength="255"></textarea> </pre>
                 Topic*:
                     <div class="input-group mb-3">
-                                    <g:select class="custom-select" name="topiclink" id="inputGroupSelect03"
+                                    <g:select class="custom-select" name="topiclink" id="inputGroupSelect04"
                                               from="${Topic.list(sort:'name')}" optionValue="name" optionKey="id" />
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" value="submit">Share</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="form3-btn1" >Share</button>
+                <button type="button" class="btn btn-secondary" id="form3-btn2" data-dismiss="modal">Cancel</button>
             </div>
                 </g:uploadForm>
 
@@ -179,14 +183,14 @@
                     <span aria-hidden="true">&times</span>
                 </button>
             </div>
-            <g:uploadForm name="shareLink" id="form1" action="createdocument" >
+            <g:uploadForm name="shareLink" id="form4" action="createDocument" >
 
                 <div class="modal-body" >
                     <pre>Document*:         <input type="file" required size="38" name="documentfile" required/></pre>
                     <pre>Description*:  <textarea rows="4" cols="38" name="documentdescription" required></textarea> </pre>
                     Topic*:
                     <div class="input-group mb-3">
-                    <g:select class="custom-select" name="topicdocument" id="inputGroupSelect04"
+                    <g:select class="custom-select" name="topicdocument" id="inputGroupSelect05"
                               from="${Topic.list(sort:'name')}" optionValue="name" optionKey="id" />
                     </div>
                 </div>
@@ -198,17 +202,21 @@
         </div>
     </div>
 </div>
+<div id="flash">
+    <g:if test="${flash.error}">
+        <div class="alert alert-danger" role="alert">
+            <h3>${flash.error}</h3>
+        </div>
+    </g:if>
+    <g:if test="${flash.message}">
+        <div class="alert alert-success" role="alert">
+            <h3>${flash.message}</h3>
+        </div>
 
-<g:if test="${flash.error}">
-    <div class="alert alert-danger" role="alert">
-        <h3>${flash.error}</h3>
-    </div>
-</g:if>
-<g:if test="${flash.message}">
-    <div class="alert alert-success" role="alert">
-        <h3>${flash.message}</h3>
-    </div>
-</g:if>
+    </g:if>
+</div>
+<div id="hidden-field-success" class="alert alert-success" hidden></div>
+<div id="hidden-field-fail" class="alert alert-danger" hidden></div>
 <g:layoutBody/>
 </body>
 </html>

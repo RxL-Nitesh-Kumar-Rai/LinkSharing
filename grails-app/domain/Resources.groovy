@@ -6,7 +6,7 @@ class Resources {
     Topic topic
     Date dateCreated
     Date lastUpdated
-    static hasMany = [linkResources:LinkResource,documentResources:DocumentResource]
+    static hasMany = [linkResources:LinkResource,documentResources:DocumentResource,readingItems:ReadingItem]
     static belongsTo=[topic:Topic]
      static constraints = {
 

@@ -5,12 +5,12 @@
 //    AuthInterceptor() {
 //        matchAll()
 //                .excludes(controller:"loginPage")
-//                .excludes(controller: 'dashBoard',action: 'searchtopic')
+////                .excludes(controller: 'dashBoard',action: 'searchtopic')
 //
 //    }
 //
 //    boolean before() {
-//        println "pop"
+//        println "Bye"
 //        if(session.getAttribute("validUser") ){
 //            println "lol"
 //            true
@@ -18,6 +18,7 @@
 //        else{
 //            flash.error="Please login first"
 //            redirect(controller:'loginPage',action:'index')
+//            println "pop"
 //            false
 //        }
 //

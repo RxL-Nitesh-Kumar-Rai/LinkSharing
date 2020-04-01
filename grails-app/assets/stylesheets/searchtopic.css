@@ -1,0 +1,106 @@
+.card.searchtopic{
+    display: grid;
+    grid-template-columns: 40rem 40rem;
+}
+
+.item1 { grid-area: header; }
+.item2 { grid-area: main1; }
+.item3 { grid-area: main2; }
+.item4 { grid-area: main3; }
+.item5 { grid-area: body1; }
+.item6 { grid-area: body2; }
+.item7 { grid-area: body3; }
+.item8 { grid-area: foot1; }
+.card.grid-pagecontent{
+    display: grid;
+    grid-template-areas:    "header header header1"
+    "main1 main2 main3"
+    "body1 body2 body3"
+    "foot foot1 foot1 ";
+    grid-template-rows: 25% 25% 25% 25%;
+    background-image: url("../images/background.png");
+    color: #000000;
+}
+.form-control.mr-sm-2.search{
+    height: 25px;
+    width: 100px;
+    font-size: 16px;
+    text-align: center;
+    padding-top: 2px;
+    box-shadow: 0 0 2px rgba(0,0,0,0.2);
+    background-color: #bee5eb;
+}
+.card-body.grid1{
+    display: grid;
+    grid-template-columns: 8rem 30rem;
+    min-height: 10rem;
+    background-image: url("../images/background.png");
+}
+
+.card.topicUsers{
+    display: grid;
+    grid-template-areas: 'head head1 head2'
+                        'head main1 main2'
+                        'head body1 body2'
+                        'foot1 foot2 foot3';
+    min-height: 14rem;
+    background-image: url("../images/background.png");
+}
+.topicUsers-item1{grid-area: head}
+.topicUsers-item2{grid-area: head1}
+.topicUsers-item3{grid-area: head2}
+.topicUsers-item4{grid-area: main1}
+.topicUsers-item5{grid-area: main2}
+.topicUsers-item6{grid-area: body1}
+.topicUsers-item7{grid-area: body2}
+.topicUsers-item8{grid-area: foot1}
+.topicUsers-item9{grid-area: foot2}
+.topicUsers-item10{grid-area: foot3}
+.card-body.grid2{
+    margin:4px;
+    padding:4px;
+    overflow-x: hidden;
+    /*overflow-x: auto;*/
+    text-align:justify;
+
+
+}
+.card.searcTopicTopic{
+    background-image: url("../images/background.png");
+}
+.card-title{
+    background-image: url("../images/card-title.png");
+    font-size: 2rem;
+    min-height: 3rem;
+}
+.card.searchTopicUsers{
+    max-height: 20rem;
+    background-image: url("../images/background.png");
+}
+.card.topicPosts{
+    display: grid;
+    grid-template-areas: 'head head1 head1'
+                        'head head1 head1'
+                        'foot1 foot2 foot3';
+    min-height: 14rem;
+    background-image: url("../images/background.png");
+}
+
+.topicPosts-item1{grid-area: head}
+.topicPosts-item2{grid-area: head1}
+.topicPosts-item3{grid-area: foot1}
+.topicPosts-item4{grid-area: foot2}
+.topicPosts-item5{grid-area: foot3}
+
+.card-body.grid3{
+    margin:4px;
+    padding:4px;
+    overflow-x: hidden;
+    text-align:justify;
+    /*max-height: 30rem;*/
+    background-image: url("../images/background.png");
+}
+.card.searchTopicPosts{
+    background-image: url("../images/background.png");
+    max-height: 34rem;
+}

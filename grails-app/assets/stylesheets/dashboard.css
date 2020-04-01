@@ -1,32 +1,150 @@
+body{
+    background-image: url("../images/body-background.png");
+
+}
 .grid-container {
     display: grid;
     grid-template-columns: 39rem 39rem;
     grid-gap: 10px;
     padding: 10px;
-    background-color: #c14646;
+
 }
 .item1,.item3{
     height:20rem;
+    background-image: url("../images/background.png");
 }
 .item{
     background-color: #9fcdffff;
     border-radius: 10px;
-    border-color: #491217;
+    /*border-color: #491217;*/
     border-width: 4px;
-    border-color: #007bff;
+    border-color: #9fcdff;
 +}
 
-.item2,.item4{
-    height:50rem;
+.card.body-item2{
+
 }
 
-.titlecard{
-    border-radius: 10px;
-    text-align: center;
-    background-color: #007bff;
-    color: whitesmoke;
-    text-align: center;
-    border-width: 5px;
-    border-color: #491217;
+.card-title{
+    font-size: 2rem;
+    background-image: url("../images/card-title.png");
+}
+.card{
+    margin-top: 1.5rem;
+}
+.card.item.item2,.card.item.item3,.card.item.item4{
+    background-image: url("../images/background.png");
+}
+.card-body.card1 {
+    display: grid;
+    grid-template-areas: 'header header1 header1'
+    'header main main'
+    'header body1 body2'
+    'header footer1 footer2'
+;
+}
+.i1-item1 { grid-area: header; }
+.i1-item2 { grid-area: header1; }
+.i1-item3 { grid-area: main; }
+.i1-item4 { grid-area: body1; }
+.i1-item5 { grid-area: body2; }
+.i1-item6 { grid-area: footer1; }
+.i1-item7 { grid-area: footer2; }
+
+.card.body-item2{
+    display: grid;
+    grid-template-areas:
+            'header header1 header2 header2'
+            'header main1 main2 main3'
+            'header body1 body2 body3'
+            'foot foot foot1 foot1';
+    height: 14rem;
+    background-image: url("../images/background.png");
+    border-width: 3px;
+    border-color: #0b2e13;
+
+}
+.i2-item1 { grid-area: header; }
+.i2-item2 { grid-area: header1; }
+.i2-item3 {grid-area: header2}
+.i2-item4 { grid-area: main1; }
+.i2-item5 { grid-area: main2; }
+.i2-item6 { grid-area: main3; }
+.i2-item7 { grid-area: body1; }
+.i2-item8 { grid-area: body2; }
+.i2-item9 { grid-area: body3; }
+.i2-item10 { grid-area: foot; }
+.i2-item11 { grid-area: foot1; }
+
+.card.body-item3{
+    display: grid;
+    grid-template-areas:
+                        'header header1 header2 header3'
+                        'header main main main'
+                        'header main main main'
+                        'foot1 foot2 foot3 foot4';
+    height: 13rem;
+    background-image: url("../images/background.png");
+    border-width: 3px;
+    border-color: #0b2e13;
+
+
 }
 
+.i3-item1 { grid-area: header; }
+.i3-item2 { grid-area: header1; }
+.i3-item3 { grid-area: header2; }
+.i3-item4 { grid-area: header3; }
+.i3-item5 { grid-area: main; }
+.i3-item6 { grid-area: foot2; }
+.i3-item7 { grid-area: foot3; }
+.i3-item8 { grid-area: foot4; }
+
+.readingItem{
+    margin:4px;
+    padding:4px;
+    overflow-x: hidden;
+    /*overflow-x: auto;*/
+    text-align:justify;
+}
+.card.body-item4{
+    display: grid;
+    grid-template-areas: 'head head1 head2 head3'
+                        'head main1 main2 main3'
+                        'head body1 body2 body3'
+                        'foot1 foot2 foot3 foot3';
+    min-height: 14rem;
+    background-image: url("../images/background.png");
+    border-width: 3px;
+    border-color: #0b2e13;
+}
+.i4-item1 { grid-area: head; }
+.i4-item2 { grid-area: head1; }
+.i4-item3 { grid-area: head2; }
+.i4-item4 { grid-area: head3; }
+.i4-item5 { grid-area: main1; }
+.i4-item6 { grid-area: main2; }
+.i4-item7 { grid-area: main3; }
+.i4-item8 { grid-area: body1; }
+.i4-item9 { grid-area: body2; }
+.i4-item10 { grid-area: body3; }
+.i4-item11 { grid-area: foot1; }
+.i4-item12 { grid-area: foot2; }
+.i4-item13 { grid-area: foot3; }
+
+.trendingTopic{
+    height: 16rem;
+    margin:4px;
+    padding:4px;
+    overflow-x: hidden;
+    /*overflow-x: auto;*/
+    text-align:justify;
+}
+.subscriptions{
+    height: 16rem;
+    margin:4px;
+    padding:4px;
+    overflow-x: hidden;
+    /*overflow-x: auto;*/
+    text-align:justify;
+}

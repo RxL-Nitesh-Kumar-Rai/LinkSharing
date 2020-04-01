@@ -27,6 +27,38 @@
         }
 
     </style>
+<script>
+    // window.onload = function () {
+    //     if (typeof history.pushState === "function") {
+    //         history.pushState("jibberish", null, null);
+    //         window.onpopstate = function () {
+    //             history.pushState('newjibberish', null, null);
+    //         };
+    //     }
+    //     else {
+    //         var ignoreHashChange = true;
+    //         window.onhashchange = function () {
+    //             if (!ignoreHashChange) {
+    //                 ignoreHashChange = true;
+    //                 window.location.hash = Math.random();
+    //             }
+    //             else {
+    //                 ignoreHashChange = false;
+    //             }
+    //         };
+    //     }
+    // };
+    // window.history.forward();
+    // window.onload = function()
+    // {
+    //     window.history.forward();
+    // };
+    //
+    // window.onunload = function() {
+    //     null;
+    // };
+
+</script>
 
     <meta name="layout" content="loginnav"/>
 %{--    <asset:link rel="shortcut icon" href="icon.ico" type="image/x-icon"/>--}%
@@ -35,24 +67,27 @@
         <div class="grid-container">
             <div>
                 <div class="card dynamic">
-                    <h2><p class ="login-register">Recent shares</p></h2>
+                    <h2><p class ="card-title">Recent shares</p></h2>
                     <div class="card-scroll">
-                        <g:each in="${topic}">
+                        <g:if test="${post}">
+                        <g:each in="${post}">
                             <div class="card grid-shares">
                                 <div>
-                                    <asset:image src="icon.ico" height="120" alt="Grails Guides" class="float-left"/>
+                                    <g:link controller="dashBoard" params="[userName:it.resource.createdBy.userName]" action="userprofile">
+                                        <asset:image src="icon.ico" height="120" alt="Grails Guides" class="float-left" id="user-image" title="View this user's profile"/>
+                                    </g:link>
                                 </div>
                                 <div class="card grid-compo">
 %{--                                    <pre class="topic-content">${new Date()-it.dateCreated}th day    ${it.name}   ${it.createdBy.email}  ${it.createdBy.userName}  </pre >--}%
 %{--                                    <pre>${it.description}</pre>--}%
-                                    <div class="item1">${it.createdBy.userName}</div>
-                                    <div class="item2">${it.createdBy.email}</div>
-                                    <div class="item3">${new Date()-it.dateCreated}th day   ${it.name}</div>
-                                    <div class="item4"></div>
+                                    <div class="item1">${it.resource.createdBy.userName}</div>
+                                    <div class="item2">${it.resource.createdBy.email}</div>
+                                    <div class="item3">day${new Date()-it.dateCreated}     <g:link controller='dashBoard' action="searchtopic" params="[searchtopic: it.resource.topic.id]">${it.resource.topic.name}</g:link></div>
+                                    <div class="item4">${it.description}</div>
                                     <g:set var="idd" value="${it.id}"/>
                                     <div class="item5">
-                                        <g:link controller='dashBoard' action="searchtopic" params="[searchtopic: it.id]">
-                                            Book List
+                                        <g:link controller='resources' action="viewPost" params="[postId: it.id]">
+                                            View post
                                         </g:link>
                                     </div>
                                     ${params.searchtopic}
@@ -60,11 +95,80 @@
 
                             </div>
                         </g:each>
+                        </g:if>
                     </div>
 
                 </div>
                 <div class="card dynamic">
-                    <h2><p class ="login-register">Top posts</p></h2>
+                    <h2><p class ="card-title">Top posts</p></h2>
+%{--                    --}%
+                    <div class="card-scroll">
+                        <g:if test="${topPost}">
+                            <g:each in="${topPost}">
+                                <div class="card grid-shares">
+                                    <div>
+                                        <g:if test="${it.linkResource}">
+
+                                            <g:set var="userName" value="${it.linkResource.resource.createdBy.userName}"/>
+                                        </g:if>
+                                        <g:else>
+                                            <g:set var="userName" value="${it.documentResource.resource.createdBy.userName}"/>
+                                        </g:else>
+                                        <g:link controller="dashBoard" params="[userName:userName]" action="userprofile">
+                                            <asset:image src="icon.ico" height="120" alt="Grails Guides" class="float-left" id="user-image" title="View this user's profile"/>
+                                        </g:link>
+                                    </div>
+                                    <div class="card grid-compo">
+                                        <div class="item1">
+                                            <g:if test="${it.linkResource}">
+                                                ${it.linkResource.resource.createdBy.userName}
+                                            </g:if>
+                                            <g:else>
+                                                ${it.documentResource.resource.createdBy.userName}
+                                            </g:else>
+                                        </div>
+                                        <div class="item2">
+                                            <g:if test="${it.linkResource}">
+                                                ${it.linkResource.resource.createdBy.email}
+                                            </g:if>
+                                            <g:else>
+                                                ${it.documentResource.resource.createdBy.email}
+                                            </g:else>
+                                        </div>
+                                        <div class="item3">
+                                            <g:if test="${it.linkResource}">
+                                                day${new Date()-it.linkResource.dateCreated}
+                                                <g:link controller='dashBoard' action="searchtopic" params="[searchtopic: it.linkResource.resource.topic.id]">${it.linkResource.resource.topic.name}</g:link>
+                                            </g:if>
+                                            <g:else>
+                                                day${new Date()-it.documentResource.dateCreated}
+                                                <g:link controller='dashBoard' action="searchtopic" params="[searchtopic: it.documentResource.resource.topic.id]">${it.documentResource.resource.topic.name}</g:link>
+                                            </g:else>
+
+                                        </div>
+                                        <div class="item4">
+                                            <g:if test="${it.linkResource}">
+                                                ${it.linkResource.description}
+                                            </g:if>
+                                            <g:else>
+                                                ${it.documentResource.description}
+                                            </g:else>
+                                        </div>
+                                        <g:set var="idd" value="${it.id}"/>
+                                        <div class="item5">
+                                            <g:link controller='resources' action="viewPost" params="[postId: it.id]">
+                                                View post
+                                            </g:link>
+                                        </div>
+                                        ${params.searchtopic}
+                                    </div>
+
+                                </div>
+                            </g:each>
+                        </g:if>
+                    </div>
+
+%{--                    --}%
                 </div>
                 </div>
                 <div>

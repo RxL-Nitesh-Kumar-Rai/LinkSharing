@@ -1,0 +1,81 @@
+body{
+    background-image: url("../images/body-background.png");
+
+}
+
+.main-body{
+    display: grid;
+    grid-template-columns: 40rem 40rem;
+    /*background-color: #9fcdff;*/
+
+    min-height: 37.7rem;
+}
+.card.body1{
+    display: grid;
+    grid-template-areas:"head head head1 head1 head2 head3"
+    "head head body1 body1 body2 body2"
+    "main main main  main   main main"
+    "main main main  main   main main"
+    "foot foot foot1 foot1 foot1 foot1";
+    /*background-image: url("../images/background.png");*/
+}
+.card.body1>.item1 { grid-area: head; }
+.card.body1>.item2 { grid-area: head1; }
+.card.body1>.item3 { grid-area: head2; }
+.card.body1>.item4 { grid-area: head3; }
+.card.body1>.item5 { grid-area: body1; }
+.card.body1>.item6 { grid-area: body2; }
+.card.body1>.item7 { grid-area: main; }
+.card.body1>.item8 { grid-area: foot1; }
+
+.card.body1{
+    background-color: #71dd8a;
+    max-height:  20rem;
+    background-image: url("../images/background.png");
+    max-width: 40rem;
+    margin: 1.5rem;
+}
+.card.body2{
+    background-color: #71dd8a;
+    min-height:  20rem;
+    background-image: url("../images/background.png");
+    max-width: 40rem;
+    margin: 1.5rem;
+
+}
+
+.card-title{
+    font-size: 2rem;
+    background-image: url("../images/card-title.png");
+    border-bottom-width: 2px;
+
+}
+/*/////////////////////////////////////////////////////*/
+.card-body.grid{
+    display: grid;
+    grid-template-columns: 8rem 30rem;
+
+}
+.card.grid-trending>.item1 { grid-area: header; }
+.card.grid-trending>.item2 { grid-area: main1; }
+.card.grid-trending>.item3 { grid-area: main2; }
+.card.grid-trending>.item4 { grid-area: main3; }
+.card.grid-trending>.item5 { grid-area: body1; }
+.card.grid-trending>.item6 { grid-area: body2; }
+.card.grid-trending>.item7 { grid-area: body3; }
+.card.grid-trending>.item8 { grid-area: foot1; }
+.card.grid-trending>.item9 { grid-area: foot2; }
+.card.grid-trending>.item10 { grid-area: foot3; }
+.card.grid-trending>.item11 { grid-area: header1; }
+/*.card.grid-trending>.item8 { grid-area: foot1; }*/
+.card.grid-trending{
+    display: grid;
+    grid-template-areas:    "header header header1"
+                            "main1 main2 main3"
+                            "body1 body2 body3"
+                            "foot1 foot2 foot3 ";
+    grid-template-rows: 25% 25% 25% 25%;
+    color: #000000;
+    max-width: 27rem;
+    background-image: url("../images/background.png");
+}

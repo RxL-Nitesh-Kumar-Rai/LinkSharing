@@ -1,3 +1,21 @@
+var createTopic=function () {
+    $.ajax({
+        url:"/dashBoard/createTopic",
+        type:"POST",
+        data:{"tName":$("#topicName").val(),"tType":$("#inputGroupSelect01").val()},
+        success:function(data){
+            if(data.success==true){
+                $("#hidden-field-success").attr("hidden",false).text("Topic created").fadeOut(10000)
+            }
+            else{
+                $("#hidden-field-fail").attr("hidden",false).text("You have already created a topic with this name").fadeOut(10000)
+            }
+
+        },
+    });
+};
+
+
 $(document).ready(function(){
 
     $("#cPass").blur(function(){

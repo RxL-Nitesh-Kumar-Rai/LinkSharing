@@ -1,13 +1,23 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title></title>
-    <title>All users</title>
+        <title>All users</title>
     <meta name="layout" content="navbar"/>
+    <script>
+
+        $(document).ready( function () {
+            $('.table.table-bordered.table-dark').DataTable();
+        } );
+    </script>
+    <style>
+        .table{
+            color: black;
+        }
+    </style>
 </head>
 
 <body>
-<g:each in="${users}">
+
     <table class="table table-bordered table-dark">
         <col width="50">
         <col width="200">
@@ -28,25 +38,27 @@
         </tr>
         </thead>
         <tbody>
+        <g:each in="${users}">
         <tr>
             <td>${it.id}</td>
             <td>${it.userName}</td>
             <td>${it.email}</td>
             <td>${it.firstName}</td>
             <td>${it.lastName}</td>
-            <g:set var="userId" value="${it.id}" />
+            <g:set id="userId" var="userId" value="${it.id}" />
             <g:if test="${it.active==true}">
                 <td>Yes</td>
-                <td><g:link controller="dashBoard" action="changestatus" params="[status:'1',userId:userId]">DeActivate</g:link></td>
+                <td><g:link controller="dashBoard" id="activeID" action="changestatus" params="[status:'1',userId:userId]">DeActivate</g:link></td>
             </g:if>
             <g:else>
                 <td>No</td>
-                <td><g:link controller="dashBoard" action="changestatus" params="[status:'0',userId:userId]">Activate</g:link></td>
+                <td><g:link controller="dashBoard" id="inactiveId" action="changestatus" params="[status:'0',userId:userId]">Activate</g:link></td>
             </g:else>
         </tr>
+        </g:each>
         </tbody>
     </table>
-</g:each>
+
 
 </body>
 </html>

@@ -23,10 +23,11 @@ class Users {
         userName unique: true
 
 
+
     }
     static mapping = {
         table 'Users'
 //        photo column: 'image_bytes', sqlType: 'longblob'
     }
-    static hasMany = [topics:Topic,subscriptions:Subscriptions]
+    static hasMany = [topics:Topic,subscriptions:Subscriptions,readingItems:ReadingItem]
 }

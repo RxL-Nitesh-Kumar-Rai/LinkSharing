@@ -3,15 +3,27 @@
 <head>
     <title></title>
     <title>All users</title>
+
+
     <meta name="layout" content="navbar"/>
+    <script>
+        $(document).ready( function () {
+            $('.table.table-bordered.table-dark').DataTable();
+        } );
+    </script>
+    <style>
+        .table{
+            color: black;
+        }
+    </style>
 </head>
 
 <body>
-<g:each in="${topics}">
+
     <table class="table table-bordered table-dark">
-        <col width="50">
-        <col width="300">
-        <col width="400">
+        <col width="20">
+        <col width="500">
+        <col width="500">
         <col width="200">
 
         <thead>
@@ -23,15 +35,17 @@
         </tr>
         </thead>
         <tbody>
+        <g:each in="${topics}">
         <tr>
             <td>${it.id}</td>
             <td>${it.name}</td>
             <td>${it.createdBy.userName}</td>
             <td>${it.visibility}</td>
         </tr>
+        </g:each>
         </tbody>
     </table>
-</g:each>
+
 
 </body>
 </html>

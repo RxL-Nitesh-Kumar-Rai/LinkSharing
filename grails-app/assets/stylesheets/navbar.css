@@ -5,7 +5,7 @@
 .active.btn.btn-outline-success.my-2.my-sm-0{
     box-shadow: 10px 10px 5px green;
     color: whitesmoke;
-    margin-left: 30px;
+    margin-left: 20px;
     background-color: #007bff;
     min-width:90px;
     max-height: 50px;
@@ -22,4 +22,21 @@
 }
 .form-inline.my-2.my-lg-0{
     margin-left: 60px;
+}
+
+.card-title{
+    border: #1b1e21;
+    height: 3rem;
+    background-color: #34ce57;
+    text-align: center;
+    color: whitesmoke;
+    border-radius: 450px;
+    box-shadow: 10px 10px 5px green;
+
+
+}
+input{
+    border-radius: 5px;
+    border-width: 2px;
+
 }
