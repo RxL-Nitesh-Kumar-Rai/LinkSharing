@@ -7,6 +7,7 @@ class DocumentResource {
 //    int totalRatedBy
 //    Users ratedBy
 //    static hasMany = [ratedBy:Users]
+    static hasMany = [resourceRatings:ResourceRating]
     static belongsTo=[resource:Resources]
     static constraints = {
 //        ratedBy nullable: true

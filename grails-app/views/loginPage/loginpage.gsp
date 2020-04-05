@@ -10,58 +10,12 @@
 <html>
 <head>
     <style>
-        .item1{grid-area: header1;}
-        .item2{grid-area: header2;}
-        .item3{grid-area: header3;}
-        .item4{grid-area: main;}
-        .item5{grid-area: foot3;}
 
-        .card.grid-compo{
-            display:grid;
-            grid-template-areas: "header1 header2 header3"
-                                    "main main main"
-                                    "foot1 foot2 foot3";
-            grid-template-rows: 20% 60% 20%;
-            background-color: #71dd8a;
-            color: #000000;
-        }
 
     </style>
-<script>
-    // window.onload = function () {
-    //     if (typeof history.pushState === "function") {
-    //         history.pushState("jibberish", null, null);
-    //         window.onpopstate = function () {
-    //             history.pushState('newjibberish', null, null);
-    //         };
-    //     }
-    //     else {
-    //         var ignoreHashChange = true;
-    //         window.onhashchange = function () {
-    //             if (!ignoreHashChange) {
-    //                 ignoreHashChange = true;
-    //                 window.location.hash = Math.random();
-    //             }
-    //             else {
-    //                 ignoreHashChange = false;
-    //             }
-    //         };
-    //     }
-    // };
-    // window.history.forward();
-    // window.onload = function()
-    // {
-    //     window.history.forward();
-    // };
-    //
-    // window.onunload = function() {
-    //     null;
-    // };
 
-</script>
 
     <meta name="layout" content="loginnav"/>
-%{--    <asset:link rel="shortcut icon" href="icon.ico" type="image/x-icon"/>--}%
 </head>
 <body>
         <div class="grid-container">
@@ -72,14 +26,12 @@
                         <g:if test="${post}">
                         <g:each in="${post}">
                             <div class="card grid-shares">
-                                <div>
+                                <div class="recentSharePhoto">
                                     <g:link controller="dashBoard" params="[userName:it.resource.createdBy.userName]" action="userprofile">
-                                        <asset:image src="icon.ico" height="120" alt="Grails Guides" class="float-left" id="user-image" title="View this user's profile"/>
+                                        <img height="90"  width="90" src="${createLink(controller: 'loginPage', action: 'viewImage', params: ['userId':it.resource.createdBy.id])}"/>
                                     </g:link>
                                 </div>
                                 <div class="card grid-compo">
-%{--                                    <pre class="topic-content">${new Date()-it.dateCreated}th day    ${it.name}   ${it.createdBy.email}  ${it.createdBy.userName}  </pre >--}%
-%{--                                    <pre>${it.description}</pre>--}%
                                     <div class="item1">${it.resource.createdBy.userName}</div>
                                     <div class="item2">${it.resource.createdBy.email}</div>
                                     <div class="item3">day${new Date()-it.dateCreated}     <g:link controller='dashBoard' action="searchtopic" params="[searchtopic: it.resource.topic.id]">${it.resource.topic.name}</g:link></div>
@@ -101,58 +53,28 @@
                 </div>
                 <div class="card dynamic">
                     <h2><p class ="card-title">Top posts</p></h2>
-%{--                    --}%
                     <div class="card-scroll">
                         <g:if test="${topPost}">
                             <g:each in="${topPost}">
                                 <div class="card grid-shares">
-                                    <div>
-                                        <g:if test="${it.linkResource}">
-
-                                            <g:set var="userName" value="${it.linkResource.resource.createdBy.userName}"/>
-                                        </g:if>
-                                        <g:else>
-                                            <g:set var="userName" value="${it.documentResource.resource.createdBy.userName}"/>
-                                        </g:else>
-                                        <g:link controller="dashBoard" params="[userName:userName]" action="userprofile">
-                                            <asset:image src="icon.ico" height="120" alt="Grails Guides" class="float-left" id="user-image" title="View this user's profile"/>
+                                    <div class="topPostPhoto">
+                                        <g:link controller="dashBoard" params="[userName:it.resource.createdBy.userName]" action="userprofile">
+                                            <img height="90"  width="90" src="${createLink(controller: 'loginPage', action: 'viewImage', params: ['userId':it.resource.createdBy.id])}"/>
                                         </g:link>
                                     </div>
                                     <div class="card grid-compo">
                                         <div class="item1">
-                                            <g:if test="${it.linkResource}">
-                                                ${it.linkResource.resource.createdBy.userName}
-                                            </g:if>
-                                            <g:else>
-                                                ${it.documentResource.resource.createdBy.userName}
-                                            </g:else>
+                                            ${it.resource.createdBy.userName}
                                         </div>
                                         <div class="item2">
-                                            <g:if test="${it.linkResource}">
-                                                ${it.linkResource.resource.createdBy.email}
-                                            </g:if>
-                                            <g:else>
-                                                ${it.documentResource.resource.createdBy.email}
-                                            </g:else>
+                                            ${it.resource.createdBy.email}
                                         </div>
                                         <div class="item3">
-                                            <g:if test="${it.linkResource}">
-                                                day${new Date()-it.linkResource.dateCreated}
-                                                <g:link controller='dashBoard' action="searchtopic" params="[searchtopic: it.linkResource.resource.topic.id]">${it.linkResource.resource.topic.name}</g:link>
-                                            </g:if>
-                                            <g:else>
-                                                day${new Date()-it.documentResource.dateCreated}
-                                                <g:link controller='dashBoard' action="searchtopic" params="[searchtopic: it.documentResource.resource.topic.id]">${it.documentResource.resource.topic.name}</g:link>
-                                            </g:else>
-
+                                            day${new Date() - it.dateCreated}
+                                            <g:link controller='dashBoard' action="searchtopic" params="[searchtopic: it.resource.topic.id]">${it.resource.topic.name}</g:link>
                                         </div>
                                         <div class="item4">
-                                            <g:if test="${it.linkResource}">
-                                                ${it.linkResource.description}
-                                            </g:if>
-                                            <g:else>
-                                                ${it.documentResource.description}
-                                            </g:else>
+                                            ${it.description}
                                         </div>
                                         <g:set var="idd" value="${it.id}"/>
                                         <div class="item5">
@@ -167,8 +89,6 @@
                             </g:each>
                         </g:if>
                     </div>
-
-%{--                    --}%
                 </div>
                 </div>
                 <div>
@@ -177,7 +97,7 @@
                             <div class="login-register"><h2 class="card-title">Login</h2></div> <hr>
                             <pre class="form-text">Email/Username*    <input type="text" name="lgName"required></pre>
                             <pre>Password*          <input type="password" required name="lgPassword"></pre><br>
-                            <a href="#">Forgot password</a>
+                            <div class="btn" data-toggle="modal" data-target="#staticBackdrop">Forgot password</div>
                             <input type="submit" class="btn btn-primary" value="Login" id="btn-1">
                         </div>
                 </g:form>
@@ -199,5 +119,28 @@
             </div>
         </div>
     </div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <g:form controller="loginPage" action="forgotPassword">
+                <div class="modal-body">
+                    UserName/Email* <input type="text" name="loginDetail"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </g:form>
+        </div>
+    </div>
+</div>
 </body>
 </html>

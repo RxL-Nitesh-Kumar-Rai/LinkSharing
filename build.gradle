@@ -47,7 +47,8 @@ dependencies {
     compile "org.hibernate:hibernate-core:5.1.16.Final"
     compile "org.grails.plugins:gsp"
     compile "com.oracle:ojdbc7:12.1.0.2"
-
+//    compile 'org.grails.plugins:mail:3.0.0'
+    compile "org.grails.plugins:mail:2.0.0.RC6"
 //    compile 'org.grails.plugins:spring-security-core:4.0.0'
 
     console "org.grails:grails-console"

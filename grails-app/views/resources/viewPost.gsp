@@ -9,15 +9,21 @@
 <html>
 <head>
 
-    <meta name="layout" content="navbar"/>
+    <g:if test="${session.sessionId}">
+        <meta name="layout" content="navbar"/>
+    </g:if>
+    <g:else>
+        <meta name="layout" content="loginnav"/>
+    </g:else>
     <asset:javascript src="viewPost.js" />
     <asset:javascript src="dashBoard.js" />
     <asset:stylesheet src="viewPost.css"/>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 </head>
 
 <body>
-    <div id="postId" hidden>${post.id}</div>
+<div id="postId" hidden>${post.id}</div>
     <div id="postType" hidden>${type}</div>
     <div class="main-body">
         <div class="card body1">
@@ -31,22 +37,44 @@
             <div class="item4"><g:link controller='dashBoard' action="searchtopic" params="[searchtopic: post.resource.topic.id]">${post.resource.topic.name}</g:link></div>
             <div class="item5">${post.resource.createdBy.userName}</div>
             <div class="item6" id="rating">
-                <g:img dir="images" file="heart-w.png" height="30" width="30" title="rate-1" id="rat1" value="1"/>
-                <g:img dir="images" file="heart-w.png" height="30" width="30" title="rate-2" id="rat2" value="2"/>
-                <g:img dir="images" file="heart-w.png" height="30" width="30" title="rate-3" id="rat3" value="3"/>
-                <g:img dir="images" file="heart-w.png" height="30" width="30" title="rate-4" id="rat4" value="4"/>
-                <g:img dir="images" file="heart-w.png" height="30" width="30" title="rate-5" id="rat5" value="5"/>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <g:if test="${type=='link'}">
-                    <g:if test="${ResourceRating.findByLinkResource(post)}">
-                        ${ResourceRating.findByLinkResource(post).totalRatedBy}
+
+%{--                <g:img dir="images" file="heart-w.png" height="30" width="30" title="rate-1" id="rat1" value="1"/>--}%
+%{--                <g:img dir="images" file="heart-w.png" height="30" width="30" title="rate-2" id="rat2" value="2"/>--}%
+%{--                <g:img dir="images" file="heart-w.png" height="30" width="30" title="rate-3" id="rat3" value="3"/>--}%
+%{--                <g:img dir="images" file="heart-w.png" height="30" width="30" title="rate-4" id="rat4" value="4"/>--}%
+%{--                <g:img dir="images" file="heart-w.png" height="30" width="30" title="rate-5" id="rat5" value="5"/>--}%
+                <div id="rate" style="float: left"></div>
+                <div class="ratingValue" style="display: none">
+                    <g:if test="${session.sessionId}">
+                        <g:if test="${post.getClass()==LinkResource}">
+                            <g:if test="${ResourceRating.findByLinkResourceAndRatedBy(post,Users.findByUserName(session.sessionId))}">
+                                ${ResourceRating.findByLinkResourceAndRatedBy(post,Users.findByUserName(session.sessionId)).rating}
+                            </g:if>
+                            <g:else>0</g:else>
+                        </g:if>
+                        <g:else>
+                            <g:if test="${ResourceRating.findByDocumentResourceAndRatedBy(post,Users.findByUserName(session.sessionId))}">
+                                ${ResourceRating.findByDocumentResourceAndRatedBy(post,Users.findByUserName(session.sessionId)).rating}
+                            </g:if>
+                            <g:else>0</g:else>
+                        </g:else>
                     </g:if>
-                </g:if>
-                <g:else>
-                    <g:if test="${ResourceRating.findByDocumentResource(post)}">
-                        ${ResourceRating.findByDocumentResource(post).totalRatedBy}
+                    <g:else>0</g:else>
+                </div>
+
+                <div style="float: right;margin-right: 20px">
+                    RatedBy->
+                    <g:if test="${type=='link'}">
+                        <g:if test="${ResourceRating.findByLinkResource(post)}">
+                            ${ResourceRating.findAllByLinkResource(post).size()}
+                        </g:if>
                     </g:if>
-                </g:else>
+                    <g:else>
+                        <g:if test="${ResourceRating.findByDocumentResource(post)}">
+                            ${ResourceRating.findAllByDocumentResource(post).size()}
+                        </g:if>
+                    </g:else>
+                </div>
             </div>
             <div class="item7">
                 <div class="postDescription" style="margin-left: 14px">

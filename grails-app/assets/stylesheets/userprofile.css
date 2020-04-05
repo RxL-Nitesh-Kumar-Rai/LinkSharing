@@ -1,0 +1,172 @@
+.card{
+    margin: 1rem;
+    border-width: 1px;
+    border-radius: 24px;
+    width: 38.5rem;
+    border-color: #1b1e21;
+
+}
+.main-body{
+    display: grid;
+    grid-template-columns: 40.5rem 30.5rem;
+    background-color: #bee5eb;
+}
+.card.body1-card1{
+    display: grid;
+    grid-template-columns: 10rem 24rem;
+    height: 10rem;
+    background-image: url("../images/background.png");
+
+}
+.body1-card1-grid{
+    display: grid;
+    grid-template-areas:
+            'header header'
+            'main1 main2'
+            'footer1 footer2'
+            'last1 last2';
+}
+.item1 { grid-area: header; }
+.item2 { grid-area: main1; }
+.item3 { grid-area: footer1; }
+.item4 { grid-area: footer2; }
+.item5 { grid-area: last1; }
+.item6 { grid-area: last2; }
+.card-title{
+    font-size: 2rem;
+    text-align: center;
+}
+
+.card.body1-card2{
+    background-image: url("../images/background.png");
+}
+.card.body2-card2{
+    background-image: url("../images/background.png");
+}
+.card-body.bo1-ca2{
+    min-height: 15rem   ;
+    display: grid;
+    grid-template-areas:    'head1 head2 head2 head3'
+    'head1 main4 main5 main6'
+    'main main4 body7 body8'
+    'foot9 foot10 foot11 foot12';
+    width: 36rem;
+    background-image: url("../images/background.png");
+}
+.item1-1{grid-area: head1}
+.item1-2{grid-area: head2}
+.item1-3{grid-area: head3}
+.item1-4{grid-area: main4}
+.item1-5{grid-area: main5}
+.item1-6{grid-area: main6}
+.item1-7{grid-area: body7}
+.item1-8{grid-area: body8}
+.item1-9{grid-area: foot9}
+.item1-10{grid-area: foot10}
+.item1-11{grid-area: foot11}
+.item1-12{grid-area: foot12}
+
+input.topicnew{
+    width: 20rem;
+}
+#topicselect{
+    width: 6rem;
+
+}
+#seriselect{
+    width: 6rem;
+
+}
+.card.body1-card2{
+    height:26.3rem;
+    margin:15px;
+    padding:4px;
+    overflow-x: hidden;
+    text-align:justify;
+    width: 38.5rem;
+}
+.card-title{
+    background-image: url("../images/card-title.png");
+}
+.card.card-body.bo1-ca22{
+    display: grid;
+    min-height: 8rem;
+    max-width: 35rem;
+    grid-template-areas: 'head1 head2 head3'
+                            'body1 body2 body3';
+    background-image: url("../images/background.png");
+}
+.item1-122{grid-area: head1}
+.item1-22{grid-area: head2}
+.item1-32{grid-area: head3}
+.item1-42{grid-area: body1}
+.item1-52{grid-area: body2}
+.item1-62{grid-area: body3}
+
+.card.card-body.bo1-ca23{
+    display: grid;
+    max-width: 35rem;
+    grid-template-areas: 'head1 head2 head3'
+    'body1 body2 body3';
+    background-image: url("../images/background.png");
+    min-height: 8rem;
+}
+.item1-13{grid-area: head1}
+.item1-23{grid-area: head2}
+.item1-33{grid-area: head3}
+.item1-43{grid-area: body1}
+.item1-53{grid-area: body2}
+.item1-63{grid-area: body3}
+
+.card.body2-card22{
+    margin-left: 10px;
+    margin-top: 10px;
+    max-width: 40rem;
+    max-height: 20rem;
+    margin:4px;
+    padding:4px;
+    background-image: url("../images/background.png");
+    overflow-y: hidden;
+    overflow-y: auto;
+    /*text-align:justify;*/
+}
+.card.body1-card22{
+    margin-left: 10px;
+    margin-top: 10px;
+    max-width: 47rem;
+    max-height: 25rem;
+    margin:4px;
+    padding:4px;
+    background-image: url("../images/background.png");
+    overflow-y: hidden;
+    overflow-y: auto;
+}
+
+.card.body2-posts-body{
+    display: grid;
+    grid-template-areas: 'head1 head2 head2'
+                        'body body body'
+                        'foot1 foot2 foot3';
+    max-width: 35rem;
+    min-height: 8rem;
+    background-image: url("../images/background.png");
+}
+.post-item1{grid-area: head1;margin-left: 10px}
+.post-item2{grid-area: head2}
+.post-item3{grid-area: body;margin-left: 10px}
+.post-item4{grid-area: foot1}
+.post-item5{grid-area: foot2}
+.post-item6{grid-area: foot3}
+
+.card.body2-posts{
+    margin:4px;
+    padding:4px;
+    background-image: url("../images/background.png");
+    overflow-y: hidden;
+    overflow-y: auto;
+    min-height: 16.5rem;
+    max-height: 16.5rem;
+}
+td{
+    background-image: url("../images/background.png");
+}

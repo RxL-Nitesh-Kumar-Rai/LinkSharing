@@ -32,16 +32,15 @@ class TopicService {
             return true
         }
         else{
-            return flase
+            return false
         }
     }
     def changeTopicSeriousness(session,params){
-        Topic topic=Topic.get(params.topicId);
-        if(session.isAdmin || session.sessionId==topic.createdBy) {
-            Users user = Users.findByUserName(session.sessionId)
-            Subscriptions subs = Subscriptions.findByTopicAndUser(topic, user)
+        Topic topic=Topic.findById(params.topicId)
+        Users user = Users.findByUserName(session.sessionId)
+        Subscriptions subs = Subscriptions.findByTopicAndUser(topic, user)
+        if(subs!=null) {
             subs.seriousness = params.topicSeriousness
-            subs.save(flush: true, failOnError: true)
             return true
         }
         else{

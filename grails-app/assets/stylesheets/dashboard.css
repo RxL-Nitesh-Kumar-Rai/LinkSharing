@@ -148,3 +148,6 @@ body{
     /*overflow-x: auto;*/
     text-align:justify;
 }
+td{
+    background-image: url("../images/background.png");
+}

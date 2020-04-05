@@ -19,21 +19,9 @@ class DashBoardController {
         Users user = Users.findByUserName(session.sessionId)
         //Reading item
         List readingItem=[]
-
-        if(user.readingItems.size()>=5) {
-             readingItem = ReadingItem.createCriteria().list(offset: 0, max: 5) {
-                eq('user', user)
-                eq('isRead', false)
-            }
-        }
-            else if(user.readingItems.size()>0 && user.readingItems.size()<5){
-            readingItem = ReadingItem.createCriteria().list(offset: 0, max: user.readingItems.size()) {
-                eq('user', user)
-                eq('isRead', false)
-            }
-        }
-        else{
-             readingItem=[]
+        readingItem = ReadingItem.createCriteria().list() {
+            eq('user', user)
+            eq('isRead', false)
         }
         //Trending topic
         List trendingTopic=[]
@@ -50,9 +38,8 @@ class DashBoardController {
         else if(temp3.size()>0 && temp3.size()<5){
              trendingTopic=temp3[0..<temp3.size()]
         }
-        else{
-             trendingTopic=[]
-        }
+        //Subscriptions
+
 
         render(view: 'dashboard', model: ["user": user, 'readingItem': readingItem, 'trendingTopic': trendingTopic])
     }
@@ -116,13 +103,14 @@ class DashBoardController {
 
     def subscribe() {
 
-        render(controller: 'dashBoard', view: 'searchtopic', model: subscriptionsService.subscribe(session, params, flash))
+//        render(controller: 'dashBoard', view: 'searchtopic', model: subscriptionsService.subscribe(session, params))
+        render([success: subscriptionsService.subscribe(session, params)] as JSON)
     }
 
     def unsubscribe() {
 
-        render(controller: 'dashBoard', view: 'searchtopic', model: subscriptionsService.unsubscribe(session, params, flash))
-
+//        render(controller: 'dashBoard', view: 'searchtopic', model: subscriptionsService.unsubscribe(session, params))
+        render([success: subscriptionsService.unsubscribe(session, params)] as JSON)
     }
 
     def userprofile() {

@@ -4,14 +4,13 @@ package linksharing
 class DashboardInterceptor {
     DashboardInterceptor(){
         match(controller:"dashboard",action:['allusers','alltopics'])
+        match(controller: 'resources',action: 'allPosts')
     }
     boolean before() {
-        println "pop"
-        if(session.getAttribute("validUser") ){
-            println "lol"
+        if(session.isAdmin ){
             true
         }
-        if(!session.getAttribute("validUser")){
+        if(!session.isAdmin){
             flash.error="You don't have access to this"
             redirect(controller:'dashBoard',action:'dashboard')
             false

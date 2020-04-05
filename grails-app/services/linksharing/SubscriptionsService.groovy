@@ -5,16 +5,14 @@ import grails.gorm.transactions.Transactional
 @Transactional
 class SubscriptionsService {
 
-    def subscribe(session, params, flash) {
+    def subscribe(session, params) {
         Topic topic = Topic.findById(params.sub)
         Users user = Users.findByUserName(session.sessionId)
         Subscriptions sub = Subscriptions.findByTopicAndUser(topic, user)
         if (sub == null) {
             Subscriptions subs0 = new Subscriptions(topic: topic, user: user, seriousness: params.seriousness)
             topic.addToSubscriptions(subs0)
-//            user.addToTopics(topic)
             topic.save(flush: true, failOnError: true)
-            flash.message = "You have subscribed this topic with seriousness casual"
             Resources resource = Resources.findByTopic(topic)
             List<LinkResource> linkResource = LinkResource.findAllByResource(resource)
             List<DocumentResource> documentResource = DocumentResource.findAllByResource(resource)
@@ -47,21 +45,22 @@ class SubscriptionsService {
                     readingItem.save(flush: true, failOnError: true)
                 }
             }
-            return (["searchtopic": topic, "linkResource": linkResource, "subscription": subs, "documentResource": documentResource])
+//            return (["searchtopic": topic, "linkResource": linkResource, "subscription": subs, "documentResource": documentResource])
+            return true
         }
         else {
             Resources resource = Resources.findByTopic(topic)
             List<LinkResource> linkResource = LinkResource.findAllByResource(resource)
             List<DocumentResource> documentResource = DocumentResource.findAllByResource(resource)
             List<Subscriptions> subs = Subscriptions.findAllByTopic(topic)
-            return (["searchtopic": topic, "linkResource": linkResource, "subscription": subs, "documentResource": documentResource])
-
+//            return (["searchtopic": topic, "linkResource": linkResource, "subscription": subs, "documentResource": documentResource])
+            return false
         }
     }
 
 
 
-    def unsubscribe(session,params,flash){
+    def unsubscribe(session,params){
         Topic topic=Topic.findById(params.sub)
         Users user = Users.findByUserName(session.sessionId)
         Subscriptions sub=Subscriptions.findByTopicAndUser(topic,user)
@@ -82,14 +81,14 @@ class SubscriptionsService {
                     dri.delete()
                 }
             }
-            flash.error="You have unsubscribed this topic"
+
         }
 
         Resources resource=Resources.findByTopic(topic)
         List<LinkResource> linkResource=LinkResource.findAllByResource(resource)
         List<DocumentResource> documentResource=DocumentResource.findAllByResource(resource)
         List<Subscriptions>subs=Subscriptions.findAllByTopic(topic)
-        return(["searchtopic":topic, "linkResource":linkResource, "subscription":subs,"documentResource":documentResource])
-
+//        return(["searchtopic":topic, "linkResource":linkResource, "subscription":subs,"documentResource":documentResource])
+        return true
     }
 }

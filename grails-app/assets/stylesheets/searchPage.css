@@ -1,0 +1,89 @@
+.searchBody{
+    display: grid;
+    grid-template-columns: 40rem 40rem;
+    background-image: url("../images/body-background.png");
+}
+/*.searchBody1{*/
+/*    min-height: 20rem;*/
+/*    !*background-image: url("../images/background.png");*!*/
+/*}*/
+.card-title{
+    background-image: url("../images/card-title.png");
+    font-size: 2rem;
+}
+.card.trendingTopicSearch{
+    display: grid;
+    grid-template-areas: 'head1 head2 head3 head4'
+                        'head1 body1 body2 body3'
+                        'head1 foot1 foot2 foot3';
+    min-height: 8rem;
+    background-image: url("../images/background.png");
+}
+.trendingTopic-item1{grid-area: head1}
+.trendingTopic-item2{grid-area: head2}
+.trendingTopic-item3{grid-area: head3}
+.trendingTopic-item4{grid-area: head4}
+.trendingTopic-item5{grid-area: body1}
+.trendingTopic-item6{grid-area: body2}
+.trendingTopic-item7{grid-area: body3}
+.trendingTopic-item8{grid-area: foot1}
+.trendingTopic-item9{grid-area: foot2}
+.trendingTopic-item10{grid-area: foot3}
+
+.card.body1-card1{
+    background-image: url("../images/background.png");
+    max-height: 20rem;
+    margin:4px;
+    padding:4px;
+    overflow-y: scroll;
+    /*overflow-x: auto;*/
+}
+.card.body1-card2{
+    background-image: url("../images/background.png");
+    max-height: 20rem;
+    margin:4px;
+    padding:4px;
+    overflow-x: auto;
+    min-height: 8rem;
+
+}
+.card.topPosts{
+    display: grid;
+    grid-template-areas: 'head head1 head2 head3'
+                        'head body body body'
+                        'head body body body'
+                        'foot1 foot2 foot3 foot4';
+    background-image: url("../images/background.png");
+}
+.topPosts-item1{grid-area: head}
+.topPosts-item2{grid-area: head1}
+.topPosts-item3{grid-area: head2}
+.topPosts-item4{grid-area: head3}
+.topPosts-item5{grid-area: body}
+.topPosts-item6{grid-area: foot1}
+.topPosts-item7{grid-area: foot2}
+.topPosts-item8{grid-area: foot3}
+.topPosts-item9{grid-area: foot4}
+.card.searchUsers{
+    display: grid;
+    grid-template-areas: 'head head1 head2'
+                        'head foot1 foot2';
+    background-image: url("../images/background.png");
+}
+.searchUsers-item1{grid-area: head}
+.searchUsers-item2{grid-area: head1}
+.searchUsers-item3{grid-area: head2}
+.searchUsers-item4{grid-area: foot1}
+.searchUsers-item5{grid-area: foot2}
+.searchPanel{
+    max-height: 28.5rem;
+    overflow-x: auto;
+    background-image: url("../images/background.png");
+}
+.btn.btn-link{
+    font-size: 2rem;
+    background-image: url("../images/card-title.png");
+}
+td{
+    background-image: url("../images/background.png");
+}

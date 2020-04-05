@@ -9,23 +9,26 @@ var ratePost=function(val){
                 $("#hidden-field-success").attr("hidden", false).text("Rating successful").fadeToggle(3000).fadeOut(3000)
             }
             else{
-                $("#hidden-field-fail").attr("hidden", false).text("Can't rate,you have already rated it").fadeToggle(3000).fadeOut(3000)
+                $("#hidden-field-fail").attr("hidden", false).text("Can't rate,you don't have access or try login").fadeToggle(3000).fadeOut(3000)
             }
         },
+        error:function () {
+            $("#hidden-field-fail").attr("hidden", false).text("Login first").fadeToggle(3000).fadeOut(3000)
+        }
     });
 };
 
-var deletePost=function(val){
-    $.ajax({
-        url:"/resources/deletePost",
-        type:"POST",
-        data:{"postId":$("#postId").text(),"postType":$("#postType").text()},
-        success:function(data){
-            $("#hidden-field-success").attr("hidden",false).text("Post deleted").fadeToggle(3000).fadeOut(3000)
-
-        },
-    });
-};
+// var deletePost=function(val){
+//     $.ajax({
+//         url:"/resources/deletePost",
+//         type:"POST",
+//         data:{"postId":$("#postId").text(),"postType":$("#postType").text()},
+//         success:function(data){
+//             $("#hidden-field-success").attr("hidden",false).text("Post deleted").fadeToggle(3000).fadeOut(3000)
+//
+//         },
+//     });
+// };
 
 var editPost=function (postId,postDescription) {
     $.ajax({
@@ -69,10 +72,21 @@ var deletePost=function (postId,postType) {
 
 
 $(document).ready(function(){
-    $("#rat1,#rat2,#rat3,#rat4,#rat5").click(function () {
-        var val=$(this).attr("value")
-        ratePost(val);
+    $("#rate").rateYo({
+        normalFill:"white",
+        ratedFill:"black",
+        precision: 2,
+        rating:0,
+
     });
+    $("#rate").rateYo("method","rating", $(".ratingValue").text());
+    $("#rate").rateYo().on("rateyo.set",function (e, data) {
+        ratePost(data.rating.toFixed());
+    });
+    // $("#rat1,#rat2,#rat3,#rat4,#rat5").click(function () {
+    //     var val=$(this).attr("value")
+    //     ratePost(val);
+    // });
     $("#delete").click(function () {
         deletePost();
     });
@@ -133,5 +147,6 @@ $(document).ready(function(){
         var topicId=$(this).parent().siblings().eq(1).children(".topicId").text()
         deleteTopic(topicId);
     });
+
 });
 

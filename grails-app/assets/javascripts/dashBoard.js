@@ -1,21 +1,4 @@
-var editTopic=function (topicName,topicId,topicType) {
-    $.ajax({
-        url:"/dashBoard/editTopic",
-        type:"POST",
-        data:{"topicId":topicId,"topicName":topicName,"topicType":topicType},
-        success:function(data){
-            if(data.success==true){
-                $("#hidden-field-success").attr("hidden",false).text("Topic edited").fadeToggle(3000).fadeOut(3000,function () {
-                    location.reload();
-                });
-            }
-            else{
-                $("#hidden-field-fail").attr("hidden",false).text("You don't have access to do it").fadeToggle(3000).fadeOut(3000);
-            }
-        },
-    });
 
-};
 
 var changeTopicSeriousness=function (topicId,topicSeriousness) {
     $.ajax({
@@ -41,13 +24,16 @@ var deleteTopic=function (topicId) {
         data:{"topicId":topicId},
         success:function(data){
             if(data.success==true){
-                $("#hidden-field-success").attr("hidden",false).text("Seriousness changed").fadeToggle(3000).fadeOut(3000,function () {
+                $("#hidden-field-success").attr("hidden",false).text("Topic has been deleted").fadeToggle(3000).fadeOut(3000,function () {
                     location.reload();
                 });
             }
             else{
                 $("#hidden-field-fail").attr("hidden",false).text("You don't have access to do it").fadeToggle(3000).fadeOut(3000);
             }
+        },
+        error:function () {
+            $("#hidden-field-fail").attr("hidden", false).text("Unable to do it").fadeToggle(3000).fadeOut(3000)
         },
     });
 
@@ -60,7 +46,7 @@ var markAsReadPost=function (postId) {
         data:{"postId":postId},
         success:function(data){
             if(data.success==true){
-                $("#hidden-field-success").attr("hidden",false).text("Post has been marked").fadeToggle(3000).fadeOut(3000,function () {
+                $("#hidden-field-success").attr("hidden",false).text("Post has been marked as read").fadeToggle(3000).fadeOut(3000,function () {
                     location.reload();
                 });
             }
@@ -73,8 +59,9 @@ var markAsReadPost=function (postId) {
 
 };
 
-
 $(document).ready(function(){
+    $('.inboxReadingItems').DataTable();
+    $('.dashboardSubscriptionsTable').DataTable();
        $(".subscriptionEdit").click(function () {
            $(this).parent().siblings().eq(1).children().attr('hidden',true);
            $(this).parent().siblings().eq(1).children("input.subscriptionTopic").attr('hidden',false);
@@ -149,6 +136,30 @@ $(document).ready(function(){
     $(".trendingTopicDelete").click(function () {
         var topicId=$(this).parent().siblings().eq(1).children(".trendingTopicId").text();
         deleteTopic(topicId);
+    });
+    $(".subscriptionInvite").click(function () {
+        $("#inputGroupSelect03").val($(this).prev().text()).attr('disabled',true);
+        $("#navInvite").trigger("click");
+
+    });
+
+    $(".trendingTopicInvite").click(function () {
+        // openInviteTemplate()
+        $("#inputGroupSelect03").val($(this).prev().text()).attr('disabled',true);
+        $("#navInvite").trigger("click");
+    });
+    $(".subscriptionsUnsubscribe").click(function () {
+        var topicId=$(this).next().text();
+        unsubscribe(topicId);
+    });
+    $(".trendingTopicLink1").click(function () {
+        var topicId=$(this).next().text();
+        unsubscribe(topicId);
+    });
+    $(".trendingTopicLink2").click(function () {
+        var topicId=$(this).next().text();
+        var seriousness='casual';
+        subscribe(topicId,seriousness);
     });
 });
 

@@ -3,7 +3,9 @@
     grid-template-columns: 40rem 30rem auto;
     grid-gap: 10px;
 }
-
+body{
+    background-image: url("../images/body-background.png");
+}
 .grid-container {
     display: grid;
     grid-template-columns: 50rem auto;
@@ -37,11 +39,11 @@ div>hr{
 }
 .card.dynamic{
     height: 23rem;
-    background-color: #9fcdff;
     border-width: 4px;
     border-color: #007bff;
     border-radius: 10px;
     margin-top: -10px;
+    background-image: url("../images/background.png");
 
 
 }
@@ -57,7 +59,7 @@ div>hr{
 
 }
 .card.form{
-    background-color:rgb(179, 255, 179);
+    background-image: url("../images/background.png");
     border-color: #1c7430;
     border-width: 4px;
     margin-top: -10px;
@@ -82,4 +84,25 @@ div>hr{
     max-width: 47rem;
     background-color: #71dd8a;
     /*overflow: paged-x;*/
+}
+.item1{grid-area: header1;}
+.item2{grid-area: header2;}
+.item3{grid-area: header3;}
+.item4{grid-area: main;}
+.item5{grid-area: foot3;}
+
+.card.grid-compo{
+    display:grid;
+    grid-template-areas: "header1 header2 header3"
+    "main main main"
+    "foot1 foot2 foot3";
+    grid-template-rows: 20% 60% 20%;
+    background-image: url("../images/background.png");
+    color: #000000;
+}
+.recentSharePhoto,.topPostPhoto{
+    background-image: url("../images/background.png");
+}
+.card-title{
+    background-image: url("../images/card-title.png");
 }

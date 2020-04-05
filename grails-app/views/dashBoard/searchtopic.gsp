@@ -2,10 +2,13 @@
 <html>
 <html xmlns="http://www.w3.org/1999/html">
 <head>
-    <asset:javascript src="application.js"/>
     <asset:javascript src="searchtopic.js" />
-
-<meta name="layout" content="loginnav"/>
+    <g:if test="${session.sessionId}">
+        <meta name="layout" content="navbar"/>
+    </g:if>
+    <g:else>
+        <meta name="layout" content="loginnav"/>
+    </g:else>
 <title>Search topic</title>
 
 <style>
@@ -25,8 +28,9 @@
                 <h5 class="card-title">Topic: ${searchtopic.name}</h5>
                 <div class="card-body grid1">
                     <div>
-                        <img height="90" style="margin-top: 20px;margin-left: 15px "  width="90" src="${createLink(controller: 'loginPage', action: 'viewImage', params: ['userId':searchtopic.createdBy.id])}"/>
-
+                        <g:link controller="dashBoard" action="userprofile" params="[userName:searchtopic.createdBy.userName]">
+                            <img height="90" style="margin-top: 20px;margin-left: 15px "  width="90" src="${createLink(controller: 'loginPage', action: 'viewImage', params: ['userId':searchtopic.createdBy.id])}"/>
+                        </g:link>
                     </div>
                     <div class="card grid-pagecontent">
                         <div class="item1">${searchtopic.name} (${searchtopic.visibility})</div>
@@ -34,6 +38,7 @@
                         <div class="item3">Subscriptions</div>
                         <div class="item4">Post</div>
                         <div class="item5">
+                            <div class="topicId" hidden>${searchtopic.id}</div>
                             <g:set var="flag" value="false"/>
                             <g:if test="${session.sessionId!=searchtopic.createdBy.userName}">
                                 <g:each in="${searchtopic.subscriptions}">
@@ -43,10 +48,10 @@
                                 </g:each>
                                 <g:if test="${flag=="true"}">
 
-                                    <a href="" id="link1">Unsubscribe</a>
+                                    <div class="btn" id="link1">Unsubscribe</div>
                                 </g:if>
                                 <g:else>
-                                    <a href="" id="link2">Subscribe</a>
+                                    <div class="btn" id="link2">Subscribe</div>
                                 </g:else>
                             </g:if>
                         </div>
@@ -54,15 +59,12 @@
                         <div class="item7">${searchtopic.resources.linkResources.flatten().size()+searchtopic.resources.documentResources.flatten().size()}</div>
 
                         <div class="item8">
-                            <select id="seriousness2" class="form-control mr-sm-2 search" name="sub-unsub" >
-                                <option value="sub=${searchtopic.id}&seriousness=casual">casual</option>
-                                <option value="sub=${searchtopic.id}&seriousness=serious">Serious</option>
-                                <option value="sub=${searchtopic.id}&seriousness=verySerious">Very Serious</option>
-                            </select>
-%{--                            <g:select name="selectseri" from="['casual','serious','verySerious']" value="${subscription.seriousness}"/>--}%
-
+                            <g:if test="${flag=='true'}">
+                                <g:select id="seriousness2" class="form-control mr-sm-2 search" name="sub-unsub" from="['casual','serious','verySerious']" value="${Subscriptions.findByUserAndTopic(Users.findByUserName(session.sessionId),searchtopic).seriousness}"/>
+                                <div hidden>${searchtopic.id}</div>
+                                <g:img dir="images" style="float: right;margin-top: -24px;margin-right: 100px" id="topicInvite"  file="invite.png" height="30px" width="30px" title="Click to invite"/>
+                            </g:if>
                         </div>
-
 
                     </div>
                 </div>
@@ -73,7 +75,9 @@
                     <g:each in="${searchtopic.subscriptions}">
                     <div class="card topicUsers">
                         <div class="topicUsers-item1">
-                            <img height="90" style="margin-top: 20px;margin-left: 15px "  width="90" src="${createLink(controller: 'loginPage', action: 'viewImage', params: ['userId':it.user.id])}"/>
+                            <g:link controller="dashBoard" action="userprofile" params="[userName:it.user.userName]">
+                                <img height="90" style="margin-top: 20px;margin-left: 15px "  width="90" src="${createLink(controller: 'loginPage', action: 'viewImage', params: ['userId':it.user.id])}"/>
+                            </g:link>
                         </div>
                         <div class="topicUsers-item2"><b><h3>${it.user.fullName}</h3></b></div>
                         <div class="topicUsers-item3"></div>
@@ -95,23 +99,54 @@
         <div class="card searchTopicPosts">
             </pre><h5 class="card-title">Posts: ${searchtopic.name}  </h5>
                 <div class="card-body grid3">
-                    <g:each in="${searchtopic.resources}">
-%{--                        <g:if test="${it.readingitems}"--}%
+                    <g:each in="${searchtopic.resources.linkResources.flatten()}">
                         <div class="card topicPosts">
                             <div class="topicPosts-item1">
-                                <img height="90" style="margin-top: 20px;margin-left: 15px "  width="90" src="${createLink(controller: 'loginPage', action: 'viewImage', params: ['userId':it.createdBy.id])}"/>
+                                <g:link controller="dashBoard" action="userprofile" params="[userName:it.resource.createdBy.userName]">
+                                    <img height="90" style="margin-top: 20px;margin-left: 15px "  width="90" src="${createLink(controller: 'loginPage', action: 'viewImage', params: ['userId':it.resource.createdBy.id])}"/>
+                                </g:link>
                             </div>
                             <div class="topicPosts-item2">${it.description}</div>
                             <div class="topicPosts-item3"></div>
                             <div class="topicPosts-item4">
-                                <g:if test="${it.linkResources}">
-                                    View full site
-                                </g:if>
-                                <g:else>
-                                    Download
-                                </g:else>
+                                    <a href="//${it.url}" target="_blank">
+                                        View full site
+                                    </a>
                             </div>
-                            <div class="topicPosts-item5">View post</div>
+                            <div class="topicPosts-item5">
+                                <g:link controller="resources" action="viewPost" params="[postId:it.id]">
+                                    View post
+                                </g:link>
+                                <div class="postsTopicId" hidden>${it.id}</div>
+                                <g:if test="${session.sessionId}">
+                                    <div class="btn markAsReadPost">Mark as read</div>
+                                </g:if>
+                            </div>
+                        </div>
+                    </g:each>
+                    <g:each in="${searchtopic.resources.documentResources.flatten()}">
+                        <div class="card topicPosts">
+                            <div class="topicPosts-item1">
+                                <g:link controller="dashBoard" action="userprofile" params="[userName:it.resource.createdBy.userName]">
+                                    <img height="90" style="margin-top: 20px;margin-left: 15px "  width="90" src="${createLink(controller: 'loginPage', action: 'viewImage', params: ['userId':it.resource.createdBy.id])}"/>
+                                </g:link>
+                            </div>
+                            <div class="topicPosts-item2">${it.description}</div>
+                            <div class="topicPosts-item3"></div>
+                            <div class="topicPosts-item4">
+                                <g:link controller="resources" action="downloadPost" params="[postId: it.id]" target="_blank">
+                                    Download
+                                </g:link>
+                            </div>
+                            <div class="topicPosts-item5">
+                                <g:link controller="resources" action="viewPost" params="[postId:it.id]">
+                                    View post
+                                </g:link>
+                                <div class="postsTopicId" hidden>${it.id}</div>
+                                <g:if test="${session.sessionId}">
+                                    <div class="btn markAsReadPost">Mark as read</div>
+                                </g:if>
+                            </div>
                         </div>
                     </g:each>
 

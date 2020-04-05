@@ -38,7 +38,11 @@
         <g:each in="${topics}">
         <tr>
             <td>${it.id}</td>
-            <td>${it.name}</td>
+            <td>
+                <g:link controller='dashBoard' action="searchtopic" params="[searchtopic: it.id]">
+                    ${it.name}
+                </g:link>
+            </td>
             <td>${it.createdBy.userName}</td>
             <td>${it.visibility}</td>
         </tr>

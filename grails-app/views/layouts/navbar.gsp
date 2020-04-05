@@ -26,7 +26,7 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand btn btn-outline-success my-2 my-sm-0" href="#" title="home page">Link sharing</a>
+        <a class="navbar-brand btn btn-outline-success my-2 my-sm-0" href="${createLink(controller: 'loginPage',action: 'index')}" title="home page">Link sharing</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -46,7 +46,9 @@
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="${createLink(controller: 'dashBoard',action: 'alltopics')}">Topics</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Posts</a>
+                            <a class="dropdown-item" href="${createLink(controller: 'resources', action: 'allPosts')}">
+                                Posts
+                            </a>
                             <div class="dropdown-divider"></div>
                         </g:if>
                         <g:link class="dropdown-item" controller="dashBoard" action="logout">Logout</g:link>
@@ -55,7 +57,7 @@
                 <button class="nav-item active btn btn-outline-success my-2 my-sm-0 nav-link  btn-primary" data-target="#createtopic" data-toggle="modal">
                     Create Topic
                 </button>
-                <button class="nav-item active btn btn-outline-success my-2 my-sm-0 nav-link  btn-primary" data-target="#invite" data-toggle="modal">
+                <button class="nav-item active btn btn-outline-success my-2 my-sm-0 nav-link  btn-primary" id='navInvite' data-target="#invite" data-toggle="modal">
                     Invite
                 </button>
                 <button class="nav-item active btn btn-outline-success my-2 my-sm-0 nav-link  btn-primary" data-target="#createlink" data-toggle="modal">
@@ -65,10 +67,11 @@
                            Create Document
                 </button>
             </ul>
-            <g:uploadForm class="form-inline my-2 my-lg-0" url="[controller:'dashBoard',action:'searchtopic']">
-                <g:select class="form-control mr-sm-2 " name="searchtopic"
-                          aria-label="Search" noSelection="${['null':'Select topic...']}"
-                          from="${Topic.list(sort:'name')}" optionValue="name" optionKey="id" />
+            <g:uploadForm class="form-inline my-2 my-lg-0" url="[controller:'resources',action:'searchPage']">
+%{--                <g:select class="form-control mr-sm-2 " name="searchtopic"--}%
+%{--                          aria-label="Search" noSelection="${['null':'Select topic...']}"--}%
+%{--                          from="${Topic.list(sort:'name')}" optionValue="name" optionKey="id" />--}%
+                <input type="text" class="form-control mr-sm-2 custom-select" name="search" aria-label="Search" placeholder="Search..."/>
                 <button class="btn btn-outline-success my-2 my-sm-0 full" type="submit">Search topic</button>
             </g:uploadForm>
         </div>
@@ -120,23 +123,19 @@
                 </button>
             </div>
             <div class="modal-body">
-                <g:uploadForm name="shareLink" id="form1" action="index" target="parent" >
+                <g:uploadForm name="shareLink" id="form1" controller="resources" action="sendInvitation"  >
+%{--                <g:uploadForm name="shareLink" id="form1" controller="inviteLink" action="sendInvite"  >--}%
 
                     <div class="modal-body" >
-                        <pre>Email*:       <input type="email" required size="33" required/></pre>
+                        <pre>Email*:       <input type="email" name="emailInvite" id="emailInvite" required size="33" required/></pre>
                         Topic*:
                         <div class="input-group mb-3">
-                            <select class="custom-select" id="inputGroupSelect03" required>
-
-                                <option value="1"></option>
-                                <option value="2"></option>
-                                <option value="3"></option>
-                            </select>
+                            <g:select class="custom-select" id="inputGroupSelect03" name="emailTopic" value="" from="${Topic.createCriteria().list(sort:'name'){'subscriptions' {eq('user',Users.findByUserName(session.sessionId))}}}" optionKey="id" optionValue="name" required="true"/>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" value="submit">Invite</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="inviteButton" value="submit">Invite</button>
+                        <button type="button" class="btn btn-secondary" id="inviteCancel" data-dismiss="modal">Cancel</button>
                     </div>
                 </g:uploadForm>
             </div>
@@ -161,7 +160,7 @@
                 Topic*:
                     <div class="input-group mb-3">
                                     <g:select class="custom-select" name="topiclink" id="inputGroupSelect04"
-                                              from="${Topic.list(sort:'name')}" optionValue="name" optionKey="id" />
+                                              from="${Topic.createCriteria().list(sort:'name'){'subscriptions' {eq('user',Users.findByUserName(session.sessionId))}}}" optionValue="name" optionKey="id" />
                     </div>
             </div>
             <div class="modal-footer">
@@ -191,7 +190,7 @@
                     Topic*:
                     <div class="input-group mb-3">
                     <g:select class="custom-select" name="topicdocument" id="inputGroupSelect05"
-                              from="${Topic.list(sort:'name')}" optionValue="name" optionKey="id" />
+                              from="${Topic.createCriteria().list(sort:'name'){'subscriptions' {eq('user',Users.findByUserName(session.sessionID))}}}" optionValue="name" optionKey="id" />
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -202,7 +201,7 @@
         </div>
     </div>
 </div>
-<div id="flash">
+<div class="flash">
     <g:if test="${flash.error}">
         <div class="alert alert-danger" role="alert">
             <h3>${flash.error}</h3>
@@ -217,6 +216,11 @@
 </div>
 <div id="hidden-field-success" class="alert alert-success" hidden></div>
 <div id="hidden-field-fail" class="alert alert-danger" hidden></div>
+<script>
+    $(document).ready(function () {
+        $(".flash").fadeOut(5000);
+    });
+</script>
 <g:layoutBody/>
 </body>
 </html>
