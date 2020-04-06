@@ -84,7 +84,7 @@
                                                     <g:img class="topicInvite" dir="images" file="invite.png" height="30" width="30" title="Invite" disabled="true"/>
                                                 </div>
                                                 <div class="item1-12">
-                                                    <g:if test="${(session.isAdmin==true) || (topic.createdBy.userName==session.sessionId)}">
+                                                    <g:if test="${(session.isAdmin==true) || (it.createdBy.userName==session.sessionId)}">
                                                         <g:img class="topicDelete" dir="images" file="delete.png" height="30" width="30" title="Delete" disabled="true"/>
                                                     </g:if>
                                                 </div>
