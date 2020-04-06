@@ -190,7 +190,7 @@
                     Topic*:
                     <div class="input-group mb-3">
                     <g:select class="custom-select" name="topicdocument" id="inputGroupSelect05"
-                              from="${Topic.createCriteria().list(sort:'name'){'subscriptions' {eq('user',Users.findByUserName(session.sessionID))}}}" optionValue="name" optionKey="id" />
+                              from="${Topic.createCriteria().list(sort:'name'){'subscriptions' {eq('user',Users.findByUserName(session.sessionId))}}}" optionValue="name" optionKey="id" />
                     </div>
                 </div>
                 <div class="modal-footer">

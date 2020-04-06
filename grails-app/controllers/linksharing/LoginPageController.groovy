@@ -39,6 +39,31 @@ class LoginPageController {
         loginPageService.forgotPassword(params,flash)
         redirect(controller: 'loginPage', action: "index")
     }
+    def viewChangePassForm(){
+        render(controller:'loginPage',view:'changePass')
+    }
+    def changePass(){
+        boolean flag=loginPageService.changePass(params)
+
+        if(flag==true){
+            forward(controller: 'loginPage',action: 'viewChangePassForm')
+        }
+        else{
+            flash.message="Invalid link"
+            redirect(controller: 'loginPage', action: "index")
+        }
+    }
+    def updatePassword(){
+        boolean flag=loginPageService.updatePassword(params)
+        if(flag==true){
+            flash.message="Your password has been updated"
+            redirect(controller: 'loginPage',action: 'index')
+        }
+        else{
+            flash.error="Wrong username"
+            redirect(controller: 'loginPage',action: 'index')
+        }
+    }
 
 
 

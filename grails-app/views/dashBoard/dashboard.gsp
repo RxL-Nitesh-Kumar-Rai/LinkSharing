@@ -13,11 +13,7 @@
     <asset:stylesheet src="dashboard.css"/>
     <asset:javascript src="searchtopic.js"/>
     <title>Dash Board</title>
-    <script>
-        $(document).ready( function () {
 
-            });
-    </script>
 
     <style>
 

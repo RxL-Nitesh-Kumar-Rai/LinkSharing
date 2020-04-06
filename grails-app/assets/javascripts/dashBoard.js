@@ -1,4 +1,21 @@
+var editTopic=function (topicName,topicId,topicType) {
+    $.ajax({
+        url:"/dashBoard/editTopic",
+        type:"POST",
+        data:{"topicId":topicId,"topicName":topicName,"topicType":topicType},
+        success:function(data){
+            if(data.success==true){
+                $("#hidden-field-success").attr("hidden",false).text("Topic edited").fadeToggle(3000).fadeOut(3000,function () {
+                    location.reload();
+                });
+            }
+            else{
+                $("#hidden-field-fail").attr("hidden",false).text("You don't have access to do it").fadeToggle(3000).fadeOut(3000);
+            }
+        },
+    });
 
+};
 
 var changeTopicSeriousness=function (topicId,topicSeriousness) {
     $.ajax({

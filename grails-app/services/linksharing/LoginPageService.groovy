@@ -90,7 +90,7 @@ class LoginPageService {
         }
         else if(usere==null && usern==null) {
             Users user = new Users(firstName: params.rgFname, lastName: params.rgLname, password: params.rgPassword,
-                    email: params.rgEmail, photo: photo, admin: true, active: true, userName: params.rgName)
+                    email: params.rgEmail, photo: photo, admin: false, active: true, userName: params.rgName)
             user.save(failOnError: true, flush: true)
             flash.message="Successfully registered now you can login"
         }
@@ -102,16 +102,41 @@ class LoginPageService {
         Users user1=Users.findByEmail(val)
         Users user2=Users.findByUserName(val)
         Users user=user1?user1:user2
+        String token=UUID.randomUUID().toString()
         if(user){
+            InviteLink inviteLink=new InviteLink(userId:user.id,token:token)
+            inviteLink.save(flush:true,failOnError:true)
             sendMail  {
                 to user.email
-                subject "Link to subscribe to topic"
-                body "Your password is->\n ${user.password}"
+                subject "Link to change password"
+//                body "Your password is->\n ${user.password}"
+                body "http://localhost:9090/loginPage/changePass/?token=${token}&userId=${user.id}"
             }
-            flash.message="Password sent to your account"
+            flash.message="Link to change your password has been sent to your email account"
         }
         else{
             flash.error="Wrong username/email"
+        }
+        return true
+    }
+    def changePass(params){
+        InviteLink inviteLink=InviteLink.findByUserIdAndToken(params.userId,params.token)
+        if(inviteLink!=null){
+            inviteLink.delete()
+            return true
+        }
+        else{
+            return false
+        }
+    }
+    def updatePassword(params){
+        Users user=Users.findByUserName(params.userName)
+        if(user!=null){
+            user.password=params.password
+            return true
+        }
+        else{
+            return false
         }
     }
 }
