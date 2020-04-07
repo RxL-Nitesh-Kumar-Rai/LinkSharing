@@ -126,8 +126,8 @@ input.topicnew{
     margin:4px;
     padding:4px;
     background-image: url("../images/background.png");
-    overflow-y: hidden;
-    overflow-y: auto;
+    overflow-x: hidden;
+    /*overflow-y: auto;*/
     /*text-align:justify;*/
 }
 .card.body1-card22{
@@ -138,8 +138,8 @@ input.topicnew{
     margin:4px;
     padding:4px;
     background-image: url("../images/background.png");
-    overflow-y: hidden;
-    overflow-y: auto;
+    overflow-x: hidden;
+    /*overflow-y: auto;*/
 }
 
 .card.body2-posts-body{
@@ -162,8 +162,8 @@ input.topicnew{
     margin:4px;
     padding:4px;
     background-image: url("../images/background.png");
-    overflow-y: hidden;
-    overflow-y: auto;
+    overflow-x: hidden;
+    /*overflow-y: auto;*/
     min-height: 16.5rem;
     max-height: 16.5rem;
 }

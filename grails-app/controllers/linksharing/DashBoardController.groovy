@@ -44,9 +44,22 @@ class DashBoardController {
         List<Subscriptions> tempSub1=Subscriptions.findAllByUser(user)
         List tempSub2=[]
         tempSub1.each{tempSub2.add(it.topic)}
-        tempSub2.sort{it.resources.linkResources.lastUpdated && it.resources.documentResources.lastUpdated}
-        int length=(tempSub2.size()>=5)?5:tempSub2.size()
-        List resSub=tempSub2.reverse()[0..<length]
+//Map map=tempSub2.collectEntries{[it,it.resources.sort{it2->it2.lastUpdated}.lastUpdated.flatten()]}
+        Map tempSub3=tempSub2.collectEntries{it->
+
+            if(it.resources.sort{it2->it2.lastUpdated}.lastUpdated.size()>0){
+                [it,it.resources.sort{it2->it2.lastUpdated}.lastUpdated[-1]]
+            }
+            else{
+                [it,it.lastUpdated]
+            }
+        }
+        Map subTemp4=tempSub3.sort{it.value}
+        List subTemp5=[]
+        subTemp4.each{subTemp5.add(it.key)}
+        int length=(subTemp5.size()>=5)?5:subTemp.size()
+        List resSub1=subTemp5[0..<length]
+        List resSub=resSub1.reverse()
 
         render(view: 'dashboard', model: ["user": user, 'readingItem': readingItem, 'trendingTopic': trendingTopic,'subs':resSub])
     }
