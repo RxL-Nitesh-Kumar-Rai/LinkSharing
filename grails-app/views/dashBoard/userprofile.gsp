@@ -6,7 +6,7 @@
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
     <g:if test="${session.sessionId}">
         <meta name="layout" content="navbar"/>
@@ -18,6 +18,7 @@
     <asset:stylesheet src="userprofile.css"/>
     <asset:javascript src="userprofile.js"/>
     <asset:javascript src="dashBoard.js"/>
+    <asset:javascript src="searchtopic.js"/>
 </head>
 <body>
 <div class="main-body">
@@ -79,8 +80,10 @@
                                                     <g:select class="topicVisibility" name="up-visi" from="['Public','Private']" value="${it.visibility}" disabled="true"/>
                                                 </div>
                                                 <div class="item1-11">
-                                                    <g:img  dir="images" class="topicEdit" file="edit.png" height="30" width="30" title="Edit"/>
-                                                    <div hidden>${it.id}</div>
+                                                    <g:if test="${(session.isAdmin==true) || (it.createdBy.userName==session.sessionId)}">
+                                                        <g:img  dir="images" class="topicEdit" file="edit.png" height="30" width="30" title="Edit"/>
+                                                    </g:if>
+                                                    <div class="topicId" hidden>${it.id}</div>
                                                     <g:img class="topicInvite" dir="images" file="invite.png" height="30" width="30" title="Invite" disabled="true"/>
                                                 </div>
                                                 <div class="item1-12">
@@ -104,7 +107,7 @@
                         <table class="profileTopicsTable2">
                             <thead><tr><th></th></tr></thead>
                             <tbody>
-                                <g:each in="${user.topics}">
+                                <g:each in="${topics}">
                                     <tr>
                                         <td>
                                             <div class="card card-body bo1-ca22">
@@ -117,14 +120,21 @@
                                                 <div class="item1-32">Post</div>
                                                 <div class="item1-42">
                                                     <div class="topicId2" hidden>${it.id}</div>
-                                                    <g:if test="${it.subscriptions.any{it->it.user.userName==session.sessionId}}">
-                                                        <g:select name="selectSeriousness" class="topicSeriousness2" from="['casual','serious','verySerious']"/>
+                                                    <g:if test="${session.sessionId}">
+                                                        <g:if test="${it.subscriptions.any{it->it.user.userName==session.sessionId}}">
+                                                            <g:select name="selectSeriousness" class="topicSeriousness2" from="['casual','serious','verySerious']" value="${Subscriptions.findByUserAndTopic(Users.findByUserName(session.sessionId),it).seriousness}"/>
+                                                        </g:if>
+                                                        <g:else>
+                                                            <div class="btn topic2-subscribe">Subscribe</div>
+                                                        </g:else>
                                                     </g:if>
-                                                    <g:else>
-                                                        Subscribe
-                                                    </g:else>
                                                 </div>
-                                                <div class="item1-52">${it.subscriptions.size()}</div>
+                                                <div class="item1-52">${it.subscriptions.size()}
+                                                    <g:if test="${session.sessionId}">
+                                                        <g:img style="margin-left: 100px" class="topic2-Invite" dir="images" file="invite.png" height="30" width="30" title="Invite" disabled="true"/>
+                                                        <div class="topicId" hidden>${it.id}</div>
+                                                    </g:if>
+                                                </div>
                                                 <div class="item1-62">${it.resources.linkResources.flatten().size()+it.resources.documentResources.flatten().size()}</div>
                                             </div>
                                         </td>
@@ -142,13 +152,13 @@
                 <div class="card body2-card2">
                     <div class="card-title"> Profile</div>
                     <div class="card-body">
-                        <g:form controller="dashBoard" action="userupdate">
-                            <pre>First name*          <input type="text" name="firstName" placeholder="${user.firstName}" required/></pre>
-                            <pre>Last name*           <input type="text" name="lastName" placeholder="${user.lastName}" required/></pre>
-                            <pre>Username*            <input type="text" name="userName" placeholder="${user.userName}" required/></pre>
+                        <g:uploadForm controller="dashBoard" action="userupdate">
+                            <pre>First name*          <input type="text" name="firstName" value="${user.firstName}" required/></pre>
+                            <pre>Last name*           <input type="text" name="lastName" value="${user.lastName}" required/></pre>
+                            <pre>Username*            <input type="text" name="userName" value="${user.userName}" required/></pre>
                             <pre>Photo                <input type="file" name="photo"/></pre>
-                            <input type="submit" class="btn btn-primary">
-                        </g:form>
+                            <input type="submit" class="btn btn-primary" id="btn-1">
+                        </g:uploadForm>
                     </div>
                 </div>
             </g:if>
@@ -158,7 +168,7 @@
                         <table class="profileSubscriptionsTable">
                             <thead><tr><th></th></tr></thead>
                             <tbody>
-                                <g:each in="${user.subscriptions}">
+                                <g:each in="${subs}">
                                     <tr>
                                         <td>
                                             <div class="card card-body bo1-ca23">
@@ -171,7 +181,7 @@
                                                 <div class="item1-33">Post</div>
                                                 <div class="item1-43">
                                                     <div class="topicId2" hidden>${it.id}</div>
-                                                        <g:select name="selectSeriousness" class="topicSeriousness2" from="['casual','serious','verySerious']" value="${it.seriousness}" disabled="true"/>
+                                                        <g:select name="selectSeriousness" class="topicSeriousness3" from="['casual','serious','verySerious']" value="${it.seriousness}" disabled="true"/>
                                                 </div>
                                                 <div class="item1-53">${it.topic.subscriptions.size()}</div>
                                                 <div class="item1-63">${it.topic.resources.linkResources.flatten().size()+it.topic.resources.documentResources.flatten().size()}</div>
@@ -190,7 +200,7 @@
                     <g:form controller="dashBoard" action="changepass">
                         <pre>Password*             <input type="password" name="password" id="pass" required/></pre>
                         <pre>Confirm password*     <input type="password" name="cPassword" id="cPass" required/></pre>
-                        <input type="submit" class="btn btn-primary" id="btn-2">
+                        <input type="button" class="btn btn-primary" id="btn-2" value="Submit" disabled title="Enter password"/>
                     </g:form>
                 </div>
             </div>
@@ -201,7 +211,8 @@
                     <table class="profilePostsTable">
                         <thead><tr><th></th></tr></thead>
                         <tbody>
-                            <g:each in="${user.topics.resources.linkResources.flatten()+user.topics.resources.documentResources.flatten()}">
+%{--                            <g:each in="${user.topics.resources.linkResources.flatten()+user.topics.resources.documentResources.flatten()}">--}%
+                            <g:each in="${posts}">
                                 <tr>
                                     <td>
                                         <g:set var="isLink" value="false"/>

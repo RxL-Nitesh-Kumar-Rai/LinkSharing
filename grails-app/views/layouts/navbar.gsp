@@ -26,7 +26,7 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand btn btn-outline-success my-2 my-sm-0" href="${createLink(controller: 'loginPage',action: 'index')}" title="home page">Link sharing</a>
+        <a class="navbar-brand btn btn-outline-success my-2 my-sm-0" href="${createLink(controller: 'dashBoard',action: 'dashboard')}" title="home page">Link sharing</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -156,7 +156,7 @@
 
                 <div class="modal-body" >
                 <pre>Link*:         <input type="text" required size="38" id="linkurl" name="linkurl" required/></pre>
-                    <pre>Description*:  <textarea rows="4" cols="38" id="linkdescription" required name="linkdescription" aria-multiline="true"maxlength="255"></textarea> </pre>
+                    <pre>Description*:  <textarea rows="4" cols="38" id="linkdescription" required name="linkdescription" aria-multiline="true"maxlength="220"></textarea> </pre>
                 Topic*:
                     <div class="input-group mb-3">
                                     <g:select class="custom-select" name="topiclink" id="inputGroupSelect04"
@@ -186,7 +186,7 @@
 
                 <div class="modal-body" >
                     <pre>Document*:         <input type="file" required size="38" name="documentfile" required/></pre>
-                    <pre>Description*:  <textarea rows="4" cols="38" name="documentdescription" required></textarea> </pre>
+                    <pre>Description*:  <textarea rows="4" cols="38" name="documentdescription" required maxlength="220"></textarea> </pre>
                     Topic*:
                     <div class="input-group mb-3">
                     <g:select class="custom-select" name="topicdocument" id="inputGroupSelect05"

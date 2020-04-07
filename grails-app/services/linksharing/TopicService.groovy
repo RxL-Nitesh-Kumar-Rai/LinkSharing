@@ -26,9 +26,10 @@ class TopicService {
     }
     def editTopic(session,params){
         Topic topic=Topic.get(params.topicId)
-        if(session.isAdmin || session.sessionId==topic.createdBy) {
+        if(session.isAdmin==true || session.sessionId==topic.createdBy.userName) {
             topic.name = params.topicName
             topic.visibility = params.topicType
+            println topic.properties
             return true
         }
         else{
@@ -49,12 +50,35 @@ class TopicService {
     }
     def deleteTopic(session,params){
         Topic topic=Topic.get(params.topicId)
-        if(session.isAdmin || session.sessionId==topic.createdBy) {
+        if(session.isAdmin || session.sessionId==topic.createdBy.userName) {
             topic.delete()
             return true
         }
         else{
             return false
         }
+    }
+    def allCreatedTopics(session){
+        Users user=Users.findByUserName(session.sessionId)
+        List topics =Topic.findAllByCreatedBy(user)
+        return ['topics':topics]
+    }
+    def allSubscribedTopics(session){
+        Users user=Users.findByUserName(session.sessionId)
+        List subs =Subscriptions.findAllByUser(user)
+        List topics=[]
+        subs.each{topics.add(it.topic)}
+        return ['topics':topics]
+    }
+    def allUserTopics(session){
+        Users user=Users.findByUserName(session.sessionId)
+        List topics1 =Topic.findAllByCreatedBy(user)
+        List subs =Subscriptions.findAllByUser(user)
+        List topics2=[]
+        subs.each{topics2.add(it.topic)}
+        List topics=topics1+topics2
+        topics.unique()
+        return ['topics':topics]
+
     }
 }

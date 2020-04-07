@@ -86,6 +86,8 @@ var markAsReadPost=function (postId) {
 };
 
 $(document).ready(function(){
+    $('.topicUsersTable').DataTable();
+    $('.topicPostsTable').DataTable();
 $('#link1').click(function(){
     var topicId=$(this).parent().children(".topicId").text();
     unsubscribe(topicId)
@@ -104,6 +106,7 @@ $('#link1').click(function(){
     });
     $(".btn.markAsReadPost").click(function () {
         var postId=$(this).prev().text();
+        // alert(postId)
         markAsReadPost(postId)
     });
     $("#topicInvite").click(function () {

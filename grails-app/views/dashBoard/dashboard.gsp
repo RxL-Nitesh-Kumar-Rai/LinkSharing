@@ -30,73 +30,90 @@
                 <div class="card-title">Details</div>
                 <div class="card-body card1">
                     <div class="i1-item1">
-                        <img height="90" style="margin-top: 20px;margin-left: 15px "  width="90" src="${createLink(controller: 'loginPage', action: 'viewImage', params: ['userId':user.id])}"/>
+                        <g:link controller="dashBoard" action="userprofile" params="[userName:user.userName]">
+                            <img height="90" style="margin-top: 20px;margin-left: 15px "  width="90" src="${createLink(controller: 'loginPage', action: 'viewImage', params: ['userId':user.id])}"/>
+                        </g:link>
                     </div>
                     <h3><b><div class="i1-item2">${user.fullName}</div></b></h3>
                     <div class="i1-item3">${user.userName}</div>
-                    <div class="i1-item4">Subscriptions</div>
-                    <div class="i1-item5">Topics</div>
+                    <div class="i1-item4">
+                        <g:link controller="dashBoard" action="allSubscribedTopics">
+                            Subscriptions
+                        </g:link>
+                    </div>
+                    <div class="i1-item5">
+                        <g:link controller="dashBoard" action="allCreatedTopics">
+                            Topics
+                        </g:link>
+                    </div>
                     <div class="i1-item6">${user.subscriptions.size()}</div>
                     <div class="i1-item7">${user.topics.size()}</div>
                 </div>
             </div>
             <div class="card item item2">
-                <div class="card-title">Subscription</div>
+                <div class="card-title">
+                    Subscription
+                    <div style="margin-right: -30rem;margin-top: -2.5rem;font-size: 1.5rem">
+                        <g:link controller="dashBoard" action="allUserTopics">
+                            View all
+                        </g:link>
+                    </div>
+                </div>
                 <div class="subscriptions">
-                    <table class="dashboardSubscriptionsTable">
-                        <thead><tr><th></th></tr></thead>
+%{--                    <table class="dashboardSubscriptionsTable">--}%
+%{--                        <thead><tr><th></th></tr></thead>--}%
                         <tbody>
-                            <g:each in="${user.subscriptions}">
-                                <tr>
-                                    <td>
+                            <g:each in="${subs}">
+%{--                                <tr>--}%
+%{--                                    <td>topic--}%
                                         <div class="card body-item2">
                                             <div class="i2-item1">
-                                                <g:link controller="dashBoard" action="userprofile" params="[userName:it.topic.createdBy.userName]">
-                                                    <img height="90" style="margin-top: 20px;margin-left: 15px "  width="90" src="${createLink(controller: 'loginPage', action: 'viewImage', params: ['userId':it.topic.createdBy.id])}"/>
+                                                <g:link controller="dashBoard" action="userprofile" params="[userName:it.createdBy.userName]">
+                                                    <img height="90" style="margin-top: 20px;margin-left: 15px "  width="90" src="${createLink(controller: 'loginPage', action: 'viewImage', params: ['userId':it.createdBy.id])}"/>
                                                 </g:link>
                                             </div>
                                             <div class="i2-item2">
-                                                <input type="text" value="${it.topic.name}" title="click to see full topic" class="subscriptionTopic" hidden required/>
-                                                <g:link class="subscriptionTopicName" controller="dashBoard" action="searchtopic" params="[searchtopic:it.topic.id]" id="subscriptionTopicLink">
-                                                    ${it.topic.name}
+                                                <input type="text" value="${it.name}" title="click to see full topic" class="subscriptionTopic" hidden required/>
+                                                <g:link class="subscriptionTopicName" controller="dashBoard" action="searchtopic" params="[searchtopic:it.id]" id="subscriptionTopicLink">
+                                                    ${it.name}
                                                 </g:link>
                                             </div>
                                             <div class="i2-item3">
-                                                <div class="topicId" hidden>${it.topic.id}</div>
+                                                <div class="topicId" hidden>${it.id}</div>
                                                 <input type="button" class="btn btn-primary subscriptionSave" value="save" id="subscriptionSave" hidden/>
                                                 <input type="button" class="btn btn-secondary subscriptionCancel" value="cancel" id="subscriptionCancel" hidden/>
                                             </div>
-                                            <div class="i2-item4">${it.topic.createdBy.userName}</div>
+                                            <div class="i2-item4">${it.createdBy.userName}</div>
                                             <div class="i2-item5">Subscriptions</div>
                                             <div class="i2-item6">Post</div>
                                             <div class="i2-item7">
-                                                <g:if test="${session.sessionId!=it.topic.createdBy.userName}">
+                                                <g:if test="${session.sessionId!=it.createdBy.userName}">
                                                     <div class="btn subscriptionsUnsubscribe" id="subscriptionLink1">Unsubscribe</div>
-                                                    <div hidden>${it.topic.id}</div>
+                                                    <div hidden>${it.id}</div>
                                                 </g:if>
                                             </div>
-                                            <div class="i2-item8">${it.topic.subscriptions.size()}</div>
-                                            <div class="i2-item9">${it.topic.resources.linkResources.flatten().size()+it.topic.resources.documentResources.flatten().size()}</div>
+                                            <div class="i2-item8">${it.subscriptions.size()}</div>
+                                            <div class="i2-item9">${it.resources.linkResources.flatten().size()+it.resources.documentResources.flatten().size()}</div>
                                             <div class="i2-item10">
-                                                <g:select style="background-color: #9fcdff;margin: 5px" name="subscriptionTopicSeriousness" class="subscriptionTopicSeriousness" from="['casual','serious','verySerious']" value="${it.seriousness}" disabled="true"/>
-                                                <g:if test="${(it.topic.createdBy.userName==session.sessionId)|| session.isAdmin}">
-                                                    <g:select style="width: 125px;background-color: #9fcdff;margin: 5px" name="subscriptionTopicType" class="subscriptionTopicType" from="['Public','Private']" value="${it.topic.visibility}" disabled="true"/>
+                                                <g:select style="background-color: #9fcdff;margin: 5px" name="subscriptionTopicSeriousness" class="subscriptionTopicSeriousness" from="['casual','serious','verySerious']" value="${Subscriptions.findByUserAndTopic(user,it).seriousness}" disabled="true"/>
+                                                <g:if test="${(it.createdBy.userName==session.sessionId)|| session.isAdmin}">
+                                                    <g:select style="width: 125px;background-color: #9fcdff;margin: 5px" name="subscriptionTopicType" class="subscriptionTopicType" from="['Public','Private']" value="${it.visibility}" disabled="true"/>
                                                 </g:if>
                                             </div>
                                             <div class="i2-item11">
-                                                <div class="topicId" hidden>${it.topic.id}</div>
+                                                <div class="topicId" hidden>${it.id}</div>
                                                 <g:img dir="images" style="margin-left: 60" file="invite.png" height="30px" width="30px" class="subscriptionInvite" title="Click to invite"/>
-                                                <g:if test="${(it.topic.createdBy.userName==session.sessionId)|| session.isAdmin}">
+                                                <g:if test="${(it.createdBy.userName==session.sessionId)|| session.isAdmin}">
                                                     <g:img dir="images" file="edit.png" height="30px" width="30px" class="subscriptionEdit" title="Click to edit topic" value="it.topic.id"/>
                                                     <g:img dir="images" file="delete.png" height="30px" width="30px" class="subscriptionDelete" title="Click to delete topic"/>
                                                 </g:if>
                                             </div>
                                         </div>
-                                    </td>
-                                </tr>
+%{--                                    </td>--}%
+%{--                                </tr>--}%
                             </g:each>
-                        </tbody>
-                    </table>
+%{--                        </tbody>--}%
+%{--                    </table>--}%
                 </div>
             </div>
         </div>
@@ -148,7 +165,12 @@
                                                 <div class="btn markReadPost" >
                                                 Mark as read
                                                 </div>
-                                                <div class="readPostId" hidden>${it.id}</div>
+                                                <g:if test="${it.linkResource!=null}">
+                                                    <div class="readPostId" hidden>${it.linkResource.id}</div>
+                                                </g:if>
+                                                <g:else>
+                                                    <div class="readPostId" hidden>${it.documentResource.id}</div>
+                                                </g:else>
                                             </div>
                                             <div class="i3-item8">
                                                 <g:if test="${typeOfResource}">

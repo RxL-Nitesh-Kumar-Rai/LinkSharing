@@ -40,6 +40,7 @@
                         <div class="item5">
                             <div class="topicId" hidden>${searchtopic.id}</div>
                             <g:set var="flag" value="false"/>
+                            <g:if test="${session.sessionId}">
                             <g:if test="${session.sessionId!=searchtopic.createdBy.userName}">
                                 <g:each in="${searchtopic.subscriptions}">
                                     <g:if test="${it.user.userName==session.sessionId}">
@@ -53,6 +54,7 @@
                                 <g:else>
                                     <div class="btn" id="link2">Subscribe</div>
                                 </g:else>
+                            </g:if>
                             </g:if>
                         </div>
                         <div class="item6">${searchtopic.subscriptions.size()}</div>
@@ -72,25 +74,33 @@
             <div class="card searchTopicUsers">
                 <h5 class="card-title">Users: ${searchtopic.name}</h5>
                 <div class="card-body grid2">
-                    <g:each in="${searchtopic.subscriptions}">
-                    <div class="card topicUsers">
-                        <div class="topicUsers-item1">
-                            <g:link controller="dashBoard" action="userprofile" params="[userName:it.user.userName]">
-                                <img height="90" style="margin-top: 20px;margin-left: 15px "  width="90" src="${createLink(controller: 'loginPage', action: 'viewImage', params: ['userId':it.user.id])}"/>
-                            </g:link>
-                        </div>
-                        <div class="topicUsers-item2"><b><h3>${it.user.fullName}</h3></b></div>
-                        <div class="topicUsers-item3"></div>
-                        <div class="topicUsers-item4">${it.user.userName}</div>
-                        <div class="topicUsers-item5"></div>
-                        <div class="topicUsers-item6">Subscriptions</div>
-                        <div class="topicUsers-item7">Topics</div>
-                        <div class="topicUsers-item8"></div>
-                        <div class="topicUsers-item9">${it.user.subscriptions.size()}</div>
-                        <div class="topicUsers-item10">${it.user.topics.size()}</div>
-                    </div>
-                    </g:each>
-
+                    <table class="topicUsersTable">
+                        <thead><tr><th></th></tr></thead>
+                        <tbody>
+                            <g:each in="${searchtopic.subscriptions}">
+                                <tr>
+                                    <td>
+                                        <div class="card topicUsers">
+                                            <div class="topicUsers-item1">
+                                                <g:link controller="dashBoard" action="userprofile" params="[userName:it.user.userName]">
+                                                    <img height="90" style="margin-top: 20px;margin-left: 15px "  width="90" src="${createLink(controller: 'loginPage', action: 'viewImage', params: ['userId':it.user.id])}"/>
+                                                </g:link>
+                                            </div>
+                                            <div class="topicUsers-item2"><b><h3>${it.user.fullName}</h3></b></div>
+                                            <div class="topicUsers-item3"></div>
+                                            <div class="topicUsers-item4">${it.user.userName}</div>
+                                            <div class="topicUsers-item5"></div>
+                                            <div class="topicUsers-item6">Subscriptions</div>
+                                            <div class="topicUsers-item7">Topics</div>
+                                            <div class="topicUsers-item8"></div>
+                                            <div class="topicUsers-item9">${it.user.subscriptions.size()}</div>
+                                            <div class="topicUsers-item10">${it.user.topics.size()}</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </g:each>
+                        </tbody>
+                    </table>
 
                 </div>
             </div>
@@ -99,31 +109,44 @@
         <div class="card searchTopicPosts">
             </pre><h5 class="card-title">Posts: ${searchtopic.name}  </h5>
                 <div class="card-body grid3">
-                    <g:each in="${searchtopic.resources.linkResources.flatten()}">
-                        <div class="card topicPosts">
-                            <div class="topicPosts-item1">
-                                <g:link controller="dashBoard" action="userprofile" params="[userName:it.resource.createdBy.userName]">
-                                    <img height="90" style="margin-top: 20px;margin-left: 15px "  width="90" src="${createLink(controller: 'loginPage', action: 'viewImage', params: ['userId':it.resource.createdBy.id])}"/>
-                                </g:link>
-                            </div>
-                            <div class="topicPosts-item2">${it.description}</div>
-                            <div class="topicPosts-item3"></div>
-                            <div class="topicPosts-item4">
-                                    <a href="//${it.url}" target="_blank">
-                                        View full site
-                                    </a>
-                            </div>
-                            <div class="topicPosts-item5">
-                                <g:link controller="resources" action="viewPost" params="[postId:it.id]">
-                                    View post
-                                </g:link>
-                                <div class="postsTopicId" hidden>${it.id}</div>
-                                <g:if test="${session.sessionId}">
-                                    <div class="btn markAsReadPost">Mark as read</div>
-                                </g:if>
-                            </div>
-                        </div>
-                    </g:each>
+                    <table class="topicPostsTable">
+                        <thead><tr><th></th></tr></thead>
+                        <tbody>
+                            <g:each in="${searchtopic.resources.linkResources.flatten()}">
+                                <tr>
+                                    <td>
+                                        <div class="card topicPosts">
+                                            <div class="topicPosts-item1">
+                                                <g:link controller="dashBoard" action="userprofile" params="[userName:it.resource.createdBy.userName]">
+                                                    <img height="90" style="margin-top: 20px;margin-left: 15px "  width="90" src="${createLink(controller: 'loginPage', action: 'viewImage', params: ['userId':it.resource.createdBy.id])}"/>
+                                                </g:link>
+                                            </div>
+                                            <div class="topicPosts-item2">${it.description}</div>
+                                            <div class="topicPosts-item3"></div>
+                                            <div class="topicPosts-item4">
+                                                    <a href="//${it.url}" target="_blank">
+                                                        View full site
+                                                    </a>
+                                            </div>
+                                            <div class="topicPosts-item5">
+                                                <g:link controller="resources" action="viewPost" params="[postId:it.id]">
+                                                    View post
+                                                </g:link>
+                                                <div class="postsTopicId" hidden>${it.id}</div>
+                                                <g:if test="${session.sessionId}">
+                                                    <g:if test="${ReadingItem.findByLinkResourceAndUser(it,Users.findByUserName(session.sessionId))}">
+                                                        <g:if test="${ReadingItem.findByLinkResourceAndUser(it,Users.findByUserName(session.sessionId)).isRead==false}">
+                                                            <div class="btn markAsReadPost">Mark as read</div>
+                                                        </g:if>
+                                                    </g:if>
+                                                </g:if>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </g:each>
+                        </tbody>
+                    </table>
                     <g:each in="${searchtopic.resources.documentResources.flatten()}">
                         <div class="card topicPosts">
                             <div class="topicPosts-item1">
@@ -144,7 +167,11 @@
                                 </g:link>
                                 <div class="postsTopicId" hidden>${it.id}</div>
                                 <g:if test="${session.sessionId}">
-                                    <div class="btn markAsReadPost">Mark as read</div>
+                                    <g:if test="${ReadingItem.findByDocumentResourceAndUser(it,Users.findByUserName(session.sessionId))}">
+                                        <g:if test="${ReadingItem.findByDocumentResourceAndUser(it,Users.findByUserName(session.sessionId)).isRead==false}">
+                                            <div class="btn markAsReadPost">Mark as read</div>
+                                        </g:if>
+                                    </g:if>
                                 </g:if>
                             </div>
                         </div>

@@ -19,13 +19,13 @@ class ResourcesService {
         List t=Topic.createCriteria().list{
             eq ("visibility" ,Topic.Visibility.'Public')
         }
-        def n=t.collectEntries{it->
-            [it,it.resources.linkResources.size()+it.resources.documentResources.size()]
+        Map n=t.collectEntries{it->
+            [it,it.resources.linkResources.flatten().size()+it.resources.documentResources.flatten().size()]
         }
-        def m=n.sort{-it.value}
-        def l=[]
+        Map m=n.sort{-it.value}
+        List l=[]
         m.each{l.add( it.key)}
-        def res=[]
+        List res=[]
         if(l.size()>=5) {
              res = l[0..<5]
         }
@@ -33,11 +33,9 @@ class ResourcesService {
             res=l[0..<l.size()]
         }
         if (lr!=null){
-            println lr
             return ["post":lr,"type":"link","trendTopic":res]
         }
         else{
-            println dr
             return ["post":dr,"type":"document","trendTopic":res]
         }
     }
@@ -144,19 +142,29 @@ class ResourcesService {
         ReadingItem readingItem
         LinkResource linkResource=LinkResource.get(params.postId)
         DocumentResource documentResource=DocumentResource.get(params.postId)
-        if(linkResource!=null) {
-             readingItem = ReadingItem.findByLinkResource(linkResource)
+        Users user=Users.findByUserName(session.sessionId)
+        println user.userName
+        println params
+        if(linkResource!=null){
+            println "//////////////////////"
+            readingItem = ReadingItem.findByLinkResourceAndUser(linkResource,user)
+            readingItem.isRead=true
+            readingItem.save(flush: true,failOnError: true)
+            return true
         }
-        else{
-             readingItem = ReadingItem.findByDocumentResource(documentResource)
-        }
-        if(readingItem.user.userName==session.sessionId) {
+        else if(documentResource!=null){
+             readingItem = ReadingItem.findByDocumentResourceAndUser(documentResource,user)
             readingItem.isRead = true
+            println readingItem.properties
+            println "//////////////////////"
+            readingItem.save(flush: true,failOnError: true)
             return true
         }
         else{
+            println "//////////////////////"
             return false
         }
+
     }
     def editPost(session,params){
         LinkResource linkResource=LinkResource.get(params.postId)
@@ -194,10 +202,10 @@ class ResourcesService {
         //Trending topic
         List trendingTopic=[]
         List topicList = Topic.list()
-        def temp = topicList.collectEntries { it ->
+        Map temp = topicList.collectEntries { it ->
             [it, it.resources.linkResources.size() + it.resources.documentResources.size()]
         }
-        def temp2 = temp.sort { -it.value }
+        Map temp2 = temp.sort { -it.value }
         List temp3 = []
         temp2.each { temp3.add(it.key) }
         if(temp3.size()>=5) {
@@ -210,15 +218,15 @@ class ResourcesService {
         List resTpLr=LinkResource.list()
         List resTpDr=DocumentResource.list()
         List resourceList=resTpLr+resTpDr
-        def rat=resourceList.collectEntries{it->
-            def tRat=0
+        Map rat=resourceList.collectEntries{it->
+            int tRat=0
             it.resourceRatings.each{it2->tRat+=it2.rating}
             [it,tRat]
         }
-        def tempRat=rat.sort{-it.value}
-        def tempRat2=[]
+        Map tempRat=rat.sort{-it.value}
+        List tempRat2=[]
         tempRat.each{tempRat2.add(it.key)}
-        def resTp=tempRat2[0..<((tempRat2.size()<5)?tempRat2.size():5)]
+        List resTp=tempRat2[0..<((tempRat2.size()<5)?tempRat2.size():5)]
         //Search users by name
         String search=params.search
         List<Users> users=Users.createCriteria().list(sort:'userName'){
@@ -255,21 +263,35 @@ class ResourcesService {
             //Search topic by name
             topics = Topic.createCriteria().list{
                 ilike('name', '%' + search + '%')
-                eq('visibility', Topic.Visibility.'Public')
+                or {
+                    eq('createdBy',Users.findByUserName(session.sessionId))
+                    eq('visibility', Topic.Visibility.'Public')
+                }
+
             }
             List<LinkResource> linkResource = LinkResource.createCriteria().list() {
                 ilike('description', '%' +search+ '%')
                 'resource'{
-                    'topic'{
-                        eq('visibility',Topic.Visibility.'Public')
+                    or {
+                        'topic' {
+                            eq('visibility', Topic.Visibility.'Public')
+                        }
+                        'topic'{
+                            eq('createdBy',Users.findByUserName(session.sessionId))
+                        }
                     }
                 }
             }
             List<DocumentResource> documentResource = DocumentResource.createCriteria().list() {
                 ilike('description', '%' +search+ '%')
                 'resource'{
-                    'topic'{
-                        eq('visibility',Topic.Visibility.'Public')
+                    or {
+                        'topic' {
+                            eq('visibility', Topic.Visibility.'Public')
+                        }
+                        'topic'{
+                            eq('createdBy',Users.findByUserName(session.sessionId))
+                        }
                     }
                 }
             }

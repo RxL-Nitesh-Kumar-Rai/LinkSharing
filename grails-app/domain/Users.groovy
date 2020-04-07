@@ -18,7 +18,7 @@ class Users {
     }
 
     static constraints={
-        email(unique:true)
+        email(unique:true,email:true)
         photo nullable:true
         userName unique: true
 

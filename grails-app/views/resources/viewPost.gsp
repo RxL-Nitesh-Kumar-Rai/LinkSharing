@@ -18,6 +18,7 @@
     <asset:javascript src="viewPost.js" />
     <asset:javascript src="dashBoard.js" />
     <asset:stylesheet src="viewPost.css"/>
+    <asset:javascript src="searchtopic.js"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 </head>
@@ -77,10 +78,10 @@
                 </div>
             </div>
             <div class="item7">
-                <div class="postDescription" style="margin-left: 14px">
+                <div class="postDescription" style="margin-left: 14px;">
                     ${post.description}
                 </div>
-                <textarea class="PostDescriptionTextArea" cols="60" rows="5" style="margin-left: 14px" hidden>${post.description}</textarea>
+                <textarea class="PostDescriptionTextArea" cols="60" rows="5" style="margin-left: 14px" hidden maxlength="220">${post.description}</textarea>
             </div>
             <div class="item8">
                 <g:if test="${(session.isAdmin)||(post.resource.createdBy.userName==session.sessionId)}" >
@@ -122,27 +123,30 @@
                     <div class="item3">Subscriptions</div>
                     <div class="item4">Post</div>
                     <div class="item5">
-                        <g:set var="isSubscribed" value="false"/>
-                        <g:each in="${it.subscriptions}" var="sub">
-                            <g:if test="${sub.user.userName==session.sessionId}">
-                                <g:set var="isSubscribed" value="true"/>
+                        <g:if test="${session.sessionId}">
+                            <g:set var="isSubscribed" value="false"/>
+                            <g:each in="${it.subscriptions}" var="sub">
+                                <g:if test="${sub.user.userName==session.sessionId}">
+                                    <g:set var="isSubscribed" value="true"/>
+                                    </g:if>
+                            </g:each>
+                            <g:if test="${it.createdBy.userName!=session.sessionId}">
+                                <g:if test="${isSubscribed=='true'}">
+                                    <div class="btn trendingUnsubscribe">
+                                        Unsubscribe
+                                    </div>
                                 </g:if>
-                        </g:each>
-                        <g:if test="${it.createdBy.userName!=session.sessionId}">
-                            <g:if test="${isSubscribed=='true'}">
-                                <div class="btn trendingUnsubscribe">
-                                    Unsubscribe
-                                </div>
+                                <g:else>
+                                    <div class="btn trendingSubscribe">
+                                        Subscribe
+                                    </div>
+                                </g:else>
                             </g:if>
-                            <g:else>
-                                <div class="btn trendingSubscribe">
-                                    Subscribe
-                                </div>
-                            </g:else>
                         </g:if>
+                        <div hidden>${it.id}</div>
                     </div>
                     <div class="item6">${it.subscriptions.size()}</div>
-                    <div class="item7">${it.resources.linkResources.size()+it.resources.documentResources.size()}</div>
+                    <div class="item7">${it.resources.linkResources.flatten().size()+it.resources.documentResources.flatten().size()}</div>
                     <div class="item8">
                         <g:if test="${isSubscribed=='true'}">
                             <g:select disabled="true" class="subscriptonSeriousness" name="subscriptonSeriousness" from="['casual','serious','verySerious']" value="${Subscriptions.findByUserAndTopic(Users.findByUserName(session.sessionId),it).seriousness}"/>

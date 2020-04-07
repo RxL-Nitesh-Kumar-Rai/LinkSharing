@@ -29,7 +29,7 @@ class LoginPageController {
         }
     }
     def viewImage(){
-        def user = Users.get(params.userId)
+        Users user = Users.get(params.userId)
         byte[] imageInByte = user.photo
         response.contentType = 'image/png' // or the appropriate image content type
         response.outputStream << imageInByte

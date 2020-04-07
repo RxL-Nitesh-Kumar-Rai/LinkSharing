@@ -25,11 +25,13 @@ class DashBoardController {
         }
         //Trending topic
         List trendingTopic=[]
-        List topicList = Topic.list()
-        def temp = topicList.collectEntries { it ->
-            [it, it.resources.linkResources.size() + it.resources.documentResources.size()]
+        List topicList=Topic.createCriteria().list{
+            eq ("visibility" ,Topic.Visibility.'Public')
         }
-        def temp2 = temp.sort { -it.value }
+        Map temp = topicList.collectEntries { it ->
+            [it, it.resources.linkResources.flatten().size() + it.resources.documentResources.flatten().size()]
+        }
+        Map temp2 = temp.sort { -it.value }
         List temp3 = []
         temp2.each { temp3.add(it.key) }
         if(temp3.size()>=5) {
@@ -39,9 +41,14 @@ class DashBoardController {
              trendingTopic=temp3[0..<temp3.size()]
         }
         //Subscriptions
+        List<Subscriptions> tempSub1=Subscriptions.findAllByUser(user)
+        List tempSub2=[]
+        tempSub1.each{tempSub2.add(it.topic)}
+        tempSub2.sort{it.resources.linkResources.lastUpdated && it.resources.documentResources.lastUpdated}
+        int length=(tempSub2.size()>=5)?5:tempSub2.size()
+        List resSub=tempSub2.reverse()[0..<length]
 
-
-        render(view: 'dashboard', model: ["user": user, 'readingItem': readingItem, 'trendingTopic': trendingTopic])
+        render(view: 'dashboard', model: ["user": user, 'readingItem': readingItem, 'trendingTopic': trendingTopic,'subs':resSub])
     }
 
     def logout() {
@@ -103,45 +110,28 @@ class DashBoardController {
 
     def subscribe() {
 
-//        render(controller: 'dashBoard', view: 'searchtopic', model: subscriptionsService.subscribe(session, params))
         render([success: subscriptionsService.subscribe(session, params)] as JSON)
     }
 
     def unsubscribe() {
 
-//        render(controller: 'dashBoard', view: 'searchtopic', model: subscriptionsService.unsubscribe(session, params))
         render([success: subscriptionsService.unsubscribe(session, params)] as JSON)
     }
 
-    def userprofile() {
-        Users user = Users.findByUserName(params.userName)
-        List<Topic> topics = Topic.findAllByUser(user)
-        List subs = []
-        topics.each {
-            subs.add(Subscriptions.findAllByUserAndTopic(user, it))
-
-
-            render(view: 'userprofile', model: ["user": user, "topics": topics, "subs": subs])
-        }
+    def userprofile(session,params) {
+        render(view: 'userprofile', model:usersService.userProfile(session,params))
     }
-    def userupdate() {
-//        Users user=Users.findByUserName(session.sessionId)
-//        user.properties=params
-//        user.save(flush:true,failOnError: true);
-//        flash.message="Your profile has been updated"
-//        session.sessionId=params.userName
-            usersService.userUpdate(session, params, flash)
-            redirect(action: 'userprofile')
 
+    def userupdate() {
+        usersService.userUpdate(session, params, flash,request)
+        redirect(controller: 'dashBoard',action: userprofile(session,params))
         }
+
     def changepass() {
-//        Users user = Users.findByUserName(session.sessionId)
-//        user.properties=params
-//        user.save(flush: true, failOnError: true);
-//        flash.message = "Your password has been updated"
-            usersService.changePass(session, params, flash)
-//        dashboardService.changepass(session,params,flash)
-            redirect(action: 'userprofile')
+//        usersService.changePass(session, params, flash)
+//        render(controller: 'dashBoard',action: userprofile(session,params))
+        render([success: usersService.changePass(session, params)] as JSON)
+
         }
     def editTopic(){
 
@@ -153,5 +143,13 @@ class DashBoardController {
     def deleteTopic(){
         render([success: topicService.deleteTopic(session,params)] as JSON)
     }
-
+    def allCreatedTopics(){
+        render(view:'viewTopics',model: topicService.allCreatedTopics(session))
+    }
+    def allSubscribedTopics(){
+        render(view:'viewTopics',model: topicService.allSubscribedTopics(session))
+    }
+    def allUserTopics(){
+        render(view:'viewTopics',model: topicService.allUserTopics(session))
+    }
     }

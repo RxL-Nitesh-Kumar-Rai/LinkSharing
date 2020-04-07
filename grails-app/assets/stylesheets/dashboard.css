@@ -95,7 +95,7 @@ body{
 .i3-item2 { grid-area: header1; }
 .i3-item3 { grid-area: header2; }
 .i3-item4 { grid-area: header3; }
-.i3-item5 { grid-area: main; }
+.i3-item5 { grid-area: main; word-wrap: break-word;}
 .i3-item6 { grid-area: foot2; }
 .i3-item7 { grid-area: foot3; }
 .i3-item8 { grid-area: foot4; }

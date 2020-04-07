@@ -83,10 +83,7 @@ $(document).ready(function(){
     $("#rate").rateYo().on("rateyo.set",function (e, data) {
         ratePost(data.rating.toFixed());
     });
-    // $("#rat1,#rat2,#rat3,#rat4,#rat5").click(function () {
-    //     var val=$(this).attr("value")
-    //     ratePost(val);
-    // });
+
     $("#delete").click(function () {
         deletePost();
     });
@@ -146,6 +143,17 @@ $(document).ready(function(){
     $(".viewPostTopicDelete").click(function () {
         var topicId=$(this).parent().siblings().eq(1).children(".topicId").text()
         deleteTopic(topicId);
+    });
+    $('.trendingUnsubscribe').click(function(){
+        var topicId=$(this).next().text();
+        unsubscribe(topicId)
+    });
+
+    $('.trendingSubscribe').click(function(){
+        var topicId=$(this).next().text();
+        var seriousness='casual';
+        subscribe(topicId,seriousness)
+
     });
 
 });

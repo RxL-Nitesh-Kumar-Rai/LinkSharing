@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DynamicElementsStorage">
+    <option name="containingClasses">
+      <map>
+        <entry key="org.apache.tomcat.util.http.fileupload.FileUtils">
+          <value>
+            <DClassElement>
+              <option name="name" value="org.apache.tomcat.util.http.fileupload.FileUtils" />
+              <option name="myName" value="org.apache.tomcat.util.http.fileupload.FileUtils" />
+              <option name="myMethods">
+                <set>
+                  <DMethodElement>
+                    <option name="name" value="readFileToByteArray" />
+                    <option name="static" value="false" />
+                    <option name="type" value="java.lang.Object" />
+                    <option name="myPairs">
+                      <list>
+                        <ParamInfo>
+                          <option name="name" value="file" />
+                          <option name="type" value="java.io.File" />
+                        </ParamInfo>
+                      </list>
+                    </option>
+                    <option name="myType" value="java.lang.Object" />
+                    <option name="myStatic" value="false" />
+                    <option name="myName" value="readFileToByteArray" />
+                  </DMethodElement>
+                </set>
+              </option>
+            </DClassElement>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

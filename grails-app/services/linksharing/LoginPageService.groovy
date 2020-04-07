@@ -8,18 +8,18 @@ import javax.servlet.http.HttpSession
 class LoginPageService {
 
     def defaultLogin(session,params,flash){
-        def resTpLr=LinkResource.list()
-        def resTpDr=DocumentResource.list()
-        def resourceList=resTpLr+resTpDr
-        def rat=resourceList.collectEntries{it->
-            def tRat=0
+        List resTpLr=LinkResource.list()
+        List resTpDr=DocumentResource.list()
+        List resourceList=resTpLr+resTpDr
+        Map rat=resourceList.collectEntries{it->
+            int tRat=0
             it.resourceRatings.each{it2->tRat+=it2.rating}
             [it,tRat]
         }
-        def tempRat=rat.sort{-it.value}
-        def tempRat2=[]
+        Map tempRat=rat.sort{-it.value}
+        List tempRat2=[]
         tempRat.each{tempRat2.add(it.key)}
-        def resTp=tempRat2[0..<((tempRat2.size()<5)?tempRat2.size():5)]
+        List resTp=tempRat2[0..<((tempRat2.size()<5)?tempRat2.size():5)]
 
         if(Resources.list().size()>=5) {
             List topic = Topic.createCriteria().list(offset: 0, max: 5, sort: "lastUpdated", order: "desc") {
@@ -73,10 +73,19 @@ class LoginPageService {
 
     def register(params,flash,request){
 
-        def file =request.getFile("rgPhoto")
-        byte[] photo = file.bytes
-        def email=params.rgEmail
-        def userName=params.rgName
+//        def file =request.getFile("rgPhoto")
+//        byte[] photo = file.bytes
+        byte[] photo
+        if (request.getFile("rgPhoto").bytes.size() > 0) {
+            def file = request.getFile("photo")
+            photo = file.bytes
+        }
+        else{
+            File file=new File("/home/nitesh/GrailsProject/LinkSharing/grails-app/assets/images/profile.png")
+            photo=file.bytes
+        }
+        String email=params.rgEmail
+        String userName=params.rgName
         Users usere=Users.findByEmail(email)
         Users usern=Users.findByUserName(userName)
         if( usere!=null && usern!=null){
@@ -91,7 +100,14 @@ class LoginPageService {
         else if(usere==null && usern==null) {
             Users user = new Users(firstName: params.rgFname, lastName: params.rgLname, password: params.rgPassword,
                     email: params.rgEmail, photo: photo, admin: false, active: true, userName: params.rgName)
-            user.save(failOnError: true, flush: true)
+            user.validate()
+            if(user.errors.hasFieldErrors('email')){
+                flash.error="Enter a valid email"
+                return true
+            }
+            else {
+                user.save(failOnError: true, flush: true)
+            }
             flash.message="Successfully registered now you can login"
         }
         return true

@@ -106,9 +106,7 @@
                         <div class="login-register"><h2 class="card-title">Register</h2></div><hr>
                         <pre>First Name*        <input type="text" required name="rgFname" id="rFname" maxlength="10"></pre>
                         <pre>Last Name*         <input type="text" required name="rgLname" id="rLname" maxlength="10"></pre>
-                        <pre>Email*             <input type="email" required name="rgEmail" maxlength="40"
-                                                       title="pattern:- abc@xyz.domain"
-                                                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" id="rEmail"></pre>
+                        <pre>Email*             <input type="email" required name="rgEmail" maxlength="40" id="rEmail"></pre>
                         <pre>username*          <input type="text" required name="rgName" id="rName" maxlength="20"></pre>
                         <pre>Password*          <input type="password" required name="rgPassword" id="pass"></pre>
                         <pre>confirm Password*  <input type="password" required name="rgCpassword"id="cPass"></pre>
