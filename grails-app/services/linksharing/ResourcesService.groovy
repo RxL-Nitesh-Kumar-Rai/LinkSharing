@@ -143,10 +143,7 @@ class ResourcesService {
         LinkResource linkResource=LinkResource.get(params.postId)
         DocumentResource documentResource=DocumentResource.get(params.postId)
         Users user=Users.findByUserName(session.sessionId)
-        println user.userName
-        println params
         if(linkResource!=null){
-            println "//////////////////////"
             readingItem = ReadingItem.findByLinkResourceAndUser(linkResource,user)
             readingItem.isRead=true
             readingItem.save(flush: true,failOnError: true)
@@ -155,13 +152,10 @@ class ResourcesService {
         else if(documentResource!=null){
              readingItem = ReadingItem.findByDocumentResourceAndUser(documentResource,user)
             readingItem.isRead = true
-            println readingItem.properties
-            println "//////////////////////"
             readingItem.save(flush: true,failOnError: true)
             return true
         }
         else{
-            println "//////////////////////"
             return false
         }
 

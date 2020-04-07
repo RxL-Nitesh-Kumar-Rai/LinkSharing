@@ -162,7 +162,7 @@
                                                 </g:else>
                                             </div>
                                             <div class="i3-item7">
-                                                <div class="btn markReadPost" >
+                                                <div class="btn markReadPost"style="margin-top: -10px" >
                                                 Mark as read
                                                 </div>
                                                 <g:if test="${it.linkResource!=null}">

@@ -103,8 +103,8 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="form1-btn1" class="btn btn-primary" value="submit">Save</button>
-                        <button type="button" id="form1-btn2" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" id="form1-btn1" class="btn btn-primary" value="submit" style="color: whitesmoke">Save</button>
+                        <button type="button" id="form1-btn2" class="btn btn-secondary" data-dismiss="modal" style="color: whitesmoke">Cancel</button>
                     </div>
                 </g:uploadForm>
             </div>
@@ -134,8 +134,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="inviteButton" value="submit">Invite</button>
-                        <button type="button" class="btn btn-secondary" id="inviteCancel" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="inviteButton" value="submit" style="color: whitesmoke">Invite</button>
+                        <button type="button" class="btn btn-secondary" id="inviteCancel" data-dismiss="modal" style="color: whitesmoke">Cancel</button>
                     </div>
                 </g:uploadForm>
             </div>
@@ -164,8 +164,8 @@
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="form3-btn1" >Share</button>
-                <button type="button" class="btn btn-secondary" id="form3-btn2" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="form3-btn1" style="color: whitesmoke">Share</button>
+                <button type="button" class="btn btn-secondary" id="form3-btn2" data-dismiss="modal" style="color: whitesmoke">Cancel</button>
             </div>
                 </g:uploadForm>
 
@@ -194,8 +194,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" value="submit">Share</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" value="submit" style="color: whitesmoke">Share</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="color: whitesmoke">Cancel</button>
                 </div>
             </g:uploadForm>
         </div>

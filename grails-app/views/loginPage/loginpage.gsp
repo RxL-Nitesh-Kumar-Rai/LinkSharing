@@ -35,7 +35,7 @@
                                     <div class="item1">${it.resource.createdBy.userName}</div>
                                     <div class="item2">${it.resource.createdBy.email}</div>
                                     <div class="item3">day${new Date()-it.dateCreated}     <g:link controller='dashBoard' action="searchtopic" params="[searchtopic: it.resource.topic.id]">${it.resource.topic.name}</g:link></div>
-                                    <div class="item4">${it.description}</div>
+                                    <div class="item4" style="word-break: break-word">${it.description}</div>
                                     <g:set var="idd" value="${it.id}"/>
                                     <div class="item5">
                                         <g:link controller='resources' action="viewPost" params="[postId: it.id]">
@@ -73,7 +73,7 @@
                                             day${new Date() - it.dateCreated}
                                             <g:link controller='dashBoard' action="searchtopic" params="[searchtopic: it.resource.topic.id]">${it.resource.topic.name}</g:link>
                                         </div>
-                                        <div class="item4">
+                                        <div class="item4" style="word-break: break-word">
                                             ${it.description}
                                         </div>
                                         <g:set var="idd" value="${it.id}"/>

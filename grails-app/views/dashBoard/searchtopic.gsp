@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/html">
 <head>
     <asset:javascript src="searchtopic.js" />
+    <asset:javascript src="dashBoard.js"/>
     <g:if test="${session.sessionId}">
         <meta name="layout" content="navbar"/>
     </g:if>
@@ -41,12 +42,12 @@
                             <div class="topicId" hidden>${searchtopic.id}</div>
                             <g:set var="flag" value="false"/>
                             <g:if test="${session.sessionId}">
-                            <g:if test="${session.sessionId!=searchtopic.createdBy.userName}">
                                 <g:each in="${searchtopic.subscriptions}">
                                     <g:if test="${it.user.userName==session.sessionId}">
                                         <g:set var="flag" value="true"/>
                                     </g:if>
                                 </g:each>
+                            <g:if test="${session.sessionId!=searchtopic.createdBy.userName}">
                                 <g:if test="${flag=="true"}">
 
                                     <div class="btn" id="link1">Unsubscribe</div>
@@ -59,10 +60,13 @@
                         </div>
                         <div class="item6">${searchtopic.subscriptions.size()}</div>
                         <div class="item7">${searchtopic.resources.linkResources.flatten().size()+searchtopic.resources.documentResources.flatten().size()}</div>
-
                         <div class="item8">
                             <g:if test="${flag=='true'}">
-                                <g:select id="seriousness2" class="form-control mr-sm-2 search" name="sub-unsub" from="['casual','serious','verySerious']" value="${Subscriptions.findByUserAndTopic(Users.findByUserName(session.sessionId),searchtopic).seriousness}"/>
+                                <div hidden>${searchtopic.name}</div>
+                                <g:if test="${session.isAdmin==true || searchtopic.createdBy.userName==session.sessionId}">
+                                    <g:select style="margin-bottom: -20px" name="topicSeriousness" from="['Public','Private']" value="${searchtopic.visibility}" id="searchTopicVisibility"/>
+                                </g:if>
+                                <g:select id="seriousness2" style="margin-left: 120px" class="form-control mr-sm-2 search" name="sub-unsub" from="['casual','serious','verySerious']" value="${Subscriptions.findByUserAndTopic(Users.findByUserName(session.sessionId),searchtopic).seriousness}"/>
                                 <div hidden>${searchtopic.id}</div>
                                 <g:img dir="images" style="float: right;margin-top: -24px;margin-right: 100px" id="topicInvite"  file="invite.png" height="30px" width="30px" title="Click to invite"/>
                             </g:if>
@@ -121,7 +125,7 @@
                                                     <img height="90" style="margin-top: 20px;margin-left: 15px "  width="90" src="${createLink(controller: 'loginPage', action: 'viewImage', params: ['userId':it.resource.createdBy.id])}"/>
                                                 </g:link>
                                             </div>
-                                            <div class="topicPosts-item2">${it.description}</div>
+                                            <div class="topicPosts-item2" style="margin-top: 20px;word-break: break-word">${it.description}</div>
                                             <div class="topicPosts-item3"></div>
                                             <div class="topicPosts-item4">
                                                     <a href="//${it.url}" target="_blank">
@@ -147,36 +151,44 @@
                             </g:each>
                         </tbody>
                     </table>
-                    <g:each in="${searchtopic.resources.documentResources.flatten()}">
-                        <div class="card topicPosts">
-                            <div class="topicPosts-item1">
-                                <g:link controller="dashBoard" action="userprofile" params="[userName:it.resource.createdBy.userName]">
-                                    <img height="90" style="margin-top: 20px;margin-left: 15px "  width="90" src="${createLink(controller: 'loginPage', action: 'viewImage', params: ['userId':it.resource.createdBy.id])}"/>
-                                </g:link>
-                            </div>
-                            <div class="topicPosts-item2">${it.description}</div>
-                            <div class="topicPosts-item3"></div>
-                            <div class="topicPosts-item4">
-                                <g:link controller="resources" action="downloadPost" params="[postId: it.id]" target="_blank">
-                                    Download
-                                </g:link>
-                            </div>
-                            <div class="topicPosts-item5">
-                                <g:link controller="resources" action="viewPost" params="[postId:it.id]">
-                                    View post
-                                </g:link>
-                                <div class="postsTopicId" hidden>${it.id}</div>
-                                <g:if test="${session.sessionId}">
-                                    <g:if test="${ReadingItem.findByDocumentResourceAndUser(it,Users.findByUserName(session.sessionId))}">
-                                        <g:if test="${ReadingItem.findByDocumentResourceAndUser(it,Users.findByUserName(session.sessionId)).isRead==false}">
-                                            <div class="btn markAsReadPost">Mark as read</div>
-                                        </g:if>
-                                    </g:if>
-                                </g:if>
-                            </div>
-                        </div>
-                    </g:each>
-
+                    <table class="topicPostsTable">
+                        <thead><tr><th></th></tr></thead>
+                        <tbody>
+                            <g:each in="${searchtopic.resources.documentResources.flatten()}">
+                                <tr>
+                                    <td>
+                                        <div class="card topicPosts">
+                                            <div class="topicPosts-item1">
+                                                <g:link controller="dashBoard" action="userprofile" params="[userName:it.resource.createdBy.userName]">
+                                                    <img height="90" style="margin-top: 20px;margin-left: 15px "  width="90" src="${createLink(controller: 'loginPage', action: 'viewImage', params: ['userId':it.resource.createdBy.id])}"/>
+                                                </g:link>
+                                            </div>
+                                            <div class="topicPosts-item2" style="word-wrap: break-word;">${it.description}</div>
+                                            <div class="topicPosts-item3"></div>
+                                            <div class="topicPosts-item4">
+                                                <g:link controller="resources" action="downloadPost" params="[postId: it.id]" target="_blank">
+                                                    Download
+                                                </g:link>
+                                            </div>
+                                            <div class="topicPosts-item5">
+                                                <g:link controller="resources" action="viewPost" params="[postId:it.id]">
+                                                    View post
+                                                </g:link>
+                                                <div class="postsTopicId" hidden>${it.id}</div>
+                                                <g:if test="${session.sessionId}">
+                                                    <g:if test="${ReadingItem.findByDocumentResourceAndUser(it,Users.findByUserName(session.sessionId))}">
+                                                        <g:if test="${ReadingItem.findByDocumentResourceAndUser(it,Users.findByUserName(session.sessionId)).isRead==false}">
+                                                            <div class="btn markAsReadPost">Mark as read</div>
+                                                        </g:if>
+                                                    </g:if>
+                                                </g:if>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </g:each>
+                        </tbody>
+                    </table>
                 </div>
 
         </div>

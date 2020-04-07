@@ -113,5 +113,11 @@ $('#link1').click(function(){
         $("#inputGroupSelect03").val($(this).prev().text()).attr('disabled',true);
         $("#navInvite").trigger("click");
     });
+    $("#searchTopicVisibility").change(function () {
+        var topicName=$(this).prev().text();
+        var topicId=$(this).next().next().text();
+        var topicType=$(this).val()
+        editTopic(topicName,topicId,topicType)
+    });
 });
 

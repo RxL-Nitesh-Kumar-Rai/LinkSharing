@@ -10,13 +10,15 @@
 .item5 { grid-area: body1; }
 .item6 { grid-area: body2; }
 .item7 { grid-area: body3; }
-.item8 { grid-area: foot1; }
+.item8 { grid-area: foot; }
+
 .card.grid-pagecontent{
     display: grid;
+    min-height: 10rem;
     grid-template-areas:    "header header header1"
     "main1 main2 main3"
     "body1 body2 body3"
-    "foot foot1 foot1 ";
+    "foot foot foot ";
     grid-template-rows: 25% 25% 25% 25%;
     background-image: url("../images/background.png");
     color: #000000;
@@ -106,4 +108,7 @@
 }
 td{
     background-image: url("../images/background.png");
+}
+.btn{
+    color: #006dba;
 }

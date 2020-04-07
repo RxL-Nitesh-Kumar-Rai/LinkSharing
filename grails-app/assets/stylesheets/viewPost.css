@@ -79,3 +79,6 @@ body{
     max-width: 27rem;
     background-image: url("../images/background.png");
 }
+.btn{
+    color: #006dba;
+}
